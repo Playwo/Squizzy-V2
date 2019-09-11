@@ -67,6 +67,7 @@ namespace Squizzy
             CommandService.AddTypeParser(new MessageParser());
             CommandService.AddTypeParser(new CategoryParser(), true);
             CommandService.AddTypeParser(new LeaderboardTypeParser());
+            CommandService.AddTypeParser(new PlayerParser());
         }
 
         private IServiceProvider MakeProvider()
