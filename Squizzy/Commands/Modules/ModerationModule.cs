@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Discord;
+using InteractivityAddon;
+using InteractivityAddon.Confirmation;
 using Qmmands;
 using Squizzy.Services;
 
@@ -8,6 +10,7 @@ namespace Squizzy.Commands
     public class ModerationModule : SquizzyModule
     {
         public DbService Db { get; set; }
+        public InteractivityService Interactivity { get; set; }
         public RessourceAdministrationService RessourceAdministration { get; set; }
 
         [Command("Recalculate", "Recalc")]
@@ -37,14 +40,37 @@ namespace Squizzy.Commands
         [RequireHelper]
         public async Task EnableMaintenanceAsync()
         {
-            RessourceAdministration.EnableMaintenance();
+            var content = new PageBuilder()
+                .WithColor(EmbedColor.Question)
+                .WithTitle("Do you want to enable Maintenance Mode?")
+                .WithDescription("Only helpers will be able to run commands until you disable it!");
 
-            var embed = new EmbedBuilder()
-                .WithColor(EmbedColor.Success)
-                .WithTitle("Maintenance mode enabled!")
+            var confirmation = new ConfirmationBuilder()
+                .WithContent(content)
+                .WithUsers(Context.User)
+                .WithDeletion(DeletionOption.AfterCapturedContext)
                 .Build();
 
-            await ReplyAsync(embed: embed);
+            var result = await Interactivity.GetUserConfirmationAsync(confirmation, Context.Channel);
+
+            if (result.Value)
+            {
+                var msg = await ReplyAsync("Waiting for all commands to end...");
+
+                await RessourceAdministration.EnableMaintenanceAsync();
+
+                var embed = new EmbedBuilder()
+                    .WithColor(EmbedColor.Success)
+                    .WithTitle("Maintenance mode enabled!")
+                    .Build();
+
+                await msg.ModifyAsync(x =>
+                {
+                    x.Content = "";
+                    x.Embed = embed;
+                });
+            }
+
         }
 
         [Command("DisableMaintenance", "StopMaintenance")]
@@ -52,7 +78,7 @@ namespace Squizzy.Commands
         [RequireHelper]
         public async Task DisableMaintenanceAsync()
         {
-            RessourceAdministration.DisableMaintenance();
+            await RessourceAdministration.DisableMaintenanceAsync();
 
             var embed = new EmbedBuilder()
                 .WithColor(EmbedColor.Success)

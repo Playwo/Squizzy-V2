@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
 using Squizzy.Commands;
 
@@ -7,58 +8,75 @@ namespace Squizzy.Services
 {
     public class RessourceAdministrationService : SquizzyService
     {
-        private ConcurrentDictionary<ulong, bool> OccupiedUsers { get; set; }
-        private ConcurrentDictionary<ulong, bool> OccupiedChannels { get; set; }
-        private ConcurrentDictionary<ulong, bool> OccupiedGuilds { get; set; }
+        [Inject] private readonly DiscordShardedClient _client;
+
+        private ConcurrentDictionary<ulong, bool> BlockedUsers { get; set; }
+        private ConcurrentDictionary<ulong, bool> BlockedChannels { get; set; }
+        private ConcurrentDictionary<ulong, bool> BlockedGuilds { get; set; }
         private bool MaintenanceEnabled { get; set; }
         private readonly object maintenanceLock = new object();
+
+        public int RunningOccupations => BlockedUsers.Count + BlockedChannels.Count + BlockedGuilds.Count;
+
 
         public override Task InitializeAsync()
         {
             MaintenanceEnabled = false;
-            OccupiedUsers = new ConcurrentDictionary<ulong, bool>();
-            OccupiedChannels = new ConcurrentDictionary<ulong, bool>();
-            OccupiedGuilds = new ConcurrentDictionary<ulong, bool>();
+            BlockedUsers = new ConcurrentDictionary<ulong, bool>();
+            BlockedChannels = new ConcurrentDictionary<ulong, bool>();
+            BlockedGuilds = new ConcurrentDictionary<ulong, bool>();
             return Task.CompletedTask;
         }
 
         public bool IsUserOccupied(SocketUser user) 
-            => OccupiedUsers.TryGetValue(user.Id, out _);
+            => BlockedUsers.TryGetValue(user.Id, out _);
 
         public bool IsChannelOccupied(SocketChannel channel)
-            => OccupiedChannels.TryGetValue(channel.Id, out _);
+            => BlockedChannels.TryGetValue(channel.Id, out _);
 
         public bool IsGuildOccupied(SocketGuild guild)
-            => OccupiedGuilds.TryGetValue(guild.Id, out _);
+            => BlockedGuilds.TryGetValue(guild.Id, out _);
 
         public void OccupieUser(SocketUser user)
-            => OccupiedUsers.TryAdd(user.Id, true);
+            => BlockedUsers.TryAdd(user.Id, true);
 
         public void OccupieChannel(SocketChannel channel)
-            => OccupiedChannels.TryAdd(channel.Id, true);
+            => BlockedChannels.TryAdd(channel.Id, true);
 
         public void OccupieGuild(SocketGuild guild)
-            => OccupiedGuilds.TryAdd(guild.Id, true);
+            => BlockedGuilds.TryAdd(guild.Id, true);
 
         public void UnOccupieUser(SocketUser user)
-            => OccupiedUsers.TryRemove(user.Id, out _);
+            => BlockedUsers.TryRemove(user.Id, out _);
 
         public void UnOccupieChannel(SocketChannel channel)
-            => OccupiedChannels.TryRemove(channel.Id, out _);
+            => BlockedChannels.TryRemove(channel.Id, out _);
 
         public void UnOccupieGuild(SocketGuild guild)
-            => OccupiedGuilds.TryRemove(guild.Id, out _);
+            => BlockedGuilds.TryRemove(guild.Id, out _);
 
-        public void EnableMaintenance()
+        public async Task EnableMaintenanceAsync()
         {
+            await _client.SetStatusAsync(UserStatus.DoNotDisturb);
+            await _client.SetGameAsync("Maintenance Break!", type: ActivityType.Watching);
+            await WaitForCommandsToEndAsync();
+
             lock (maintenanceLock)
             {
                 MaintenanceEnabled = true;
             }
         }
 
-        public void DisableMaintenance()
+        public async Task DisableMaintenanceAsync()
         {
+            if (!MaintenanceEnabled)
+            {
+                return;
+            }
+
+            await _client.SetGameAsync("Answering Questions", type: ActivityType.Playing);
+            await _client.SetStatusAsync(UserStatus.Online);
+
             lock (maintenanceLock)
             {
                 MaintenanceEnabled = false;
@@ -78,6 +96,14 @@ namespace Squizzy.Services
             UnOccupieGuild(context.Guild);
             UnOccupieChannel(context.Channel as SocketChannel);
             UnOccupieUser(context.User);
+        }
+
+        private async Task WaitForCommandsToEndAsync()
+        {
+            while (RunningOccupations > 0)
+            {
+                await Task.Delay(100);
+            }
         }
     }
 }

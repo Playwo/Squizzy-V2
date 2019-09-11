@@ -36,7 +36,7 @@ namespace Squizzy.Commands
                 .Build();
 
             Context.Player.Cooldown.SetCommandCooldown(Context.Command, TimeSpan.FromHours(12));
-            return ReplyAsync(embed);
+            return ReplyAsync(embed: embed);
         }
 
         [Command("Ping", "Connection", "Status")]
@@ -47,7 +47,7 @@ namespace Squizzy.Commands
                 .WithDescription($":hourglass: {Context.Client.Latency}ms\n\n:heartbeat: {DbBackend.Latency}ms")
                 .Build();
 
-            await ReplyAsync(embed);
+            await ReplyAsync(embed: embed);
         }
 
         [Command("Help", "HelpMe")]

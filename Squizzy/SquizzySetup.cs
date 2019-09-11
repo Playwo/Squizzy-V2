@@ -98,6 +98,7 @@ namespace Squizzy
         {
             await Client.LoginAsync(TokenType.Bot, Config["tokens:discord"]);
             await Client.StartAsync();
+            await Client.SetGameAsync("Answering Questions", type: ActivityType.Playing);
             await Task.Delay(-1);
         }
     }
