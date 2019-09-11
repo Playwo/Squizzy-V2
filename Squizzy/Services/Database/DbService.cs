@@ -19,9 +19,13 @@ namespace Squizzy.Services
 #pragma warning restore
 
         #region Load
-        public async Task<SquizzyPlayer> LoadPlayerAsync(ulong id)
-            => await (await _dbBackEnd.PlayerCollection.FindAsync(x => x.Id == id)).FirstOrDefaultAsync() ?? new SquizzyPlayer(id);
-
+        public async Task<SquizzyPlayer> LoadPlayerAsync(SocketUser user)
+        {
+            var cursor = await _dbBackEnd.PlayerCollection.FindAsync(x => x.Id == user.Id);
+            var player = (await cursor.FirstOrDefaultAsync()) ?? new SquizzyPlayer(user.Id);
+            player.Name = user.ToString();
+            return player;
+        }
         public async Task<Question> LoadQuestionAsync(Category type, int id)
         {
             var question = await (await _dbBackEnd.GetCategoryCollection(type).FindAsync(x => x.Id == id)).FirstOrDefaultAsync();

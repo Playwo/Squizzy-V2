@@ -15,7 +15,7 @@ namespace Squizzy.Commands
             }
 
             return player.TotalAnsweredQuestions == 0
-                ? CheckResult.Unsuccessful("This player has never used Squizzy before!")
+                ? CheckResult.Unsuccessful($"{player.Name} has never used Squizzy before!")
                 : CheckResult.Successful;
         }
     }

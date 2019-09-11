@@ -35,6 +35,9 @@ namespace Squizzy.Entities
         public CooldownManager Cooldown { get; set; } = new CooldownManager();
 
         [BsonIgnore]
+        public string Name { get; set; }
+
+        [BsonIgnore]
         public int TotalWrongQuestions => TotalAnsweredQuestions - TotalCorrectQuestions;
 
         [BsonIgnore]
@@ -49,6 +52,8 @@ namespace Squizzy.Entities
         {
             Id = id;
         }
+
+        public override string ToString() => Name;
 
         public bool HasAnsweredQuestion(Question question)
             => AnsweredQuestions.Any(x => x.QuestionId == question.Id);
