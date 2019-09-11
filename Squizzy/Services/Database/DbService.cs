@@ -58,7 +58,7 @@ namespace Squizzy.Services
                 ? _client.GetShardFor(guildUser.Guild)
                 : _client.GetShard(0);
 
-            var player = await LoadPlayerAsync(message.Author.Id);
+            var player = await LoadPlayerAsync(message.Author);
 
             return new SquizzyContext(shard, message, guildUser?.Guild, player, _provider);
         }

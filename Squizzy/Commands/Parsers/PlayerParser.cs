@@ -45,7 +45,7 @@ namespace Squizzy.Commands
 
             return user is null
                 ? TypeParserResult<SquizzyPlayer>.Unsuccessful("Player not found.")
-                : TypeParserResult<SquizzyPlayer>.Successful(await db.LoadPlayerAsync(user.Id));
+                : TypeParserResult<SquizzyPlayer>.Successful(await db.LoadPlayerAsync(user));
         }
     }
 }
