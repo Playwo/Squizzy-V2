@@ -10,25 +10,23 @@ namespace Squizzy.Services
 {
     public class EmbedService : SquizzyService
     {
-        public Embed MakeQuestionResultEmbed(Question question, QuestionResult oldResult, QuestionResult newResult)
+        public Embed MakeQuestionResultEmbed(QuestionResult oldResult, QuestionResult newResult,
+                                             int oldTrophies,          int newTrophies)
         {
-            int oldTrophies = question.CalculateTrophies(oldResult ?? QuestionResult.FromIncorrect(question), out bool oldPerfect);
-            int newTrophies = question.CalculateTrophies(newResult, out bool newPerfect);
-
             var builder = new EmbedBuilder
             {
                 Title = newResult.Correct
                     ? "Correct! :D"
                     : "Wrong! :(",
                 Description = newResult.Correct
-                    ? newPerfect
+                    ? newResult.Perfect
                         ? $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n" +
                           $"That means this question is now perfect. :crown:\n"
                         : $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n"
                     : "You provided the wrong answer or cancelled! :x:\n",
                 Color = newResult.Correct
                     ? newTrophies > oldTrophies
-                        ? newPerfect && !oldPerfect
+                        ? newResult.Perfect && !oldResult.Perfect
                             ? Color.Gold
                             : Color.Green
                         : Color.Orange
@@ -62,7 +60,7 @@ namespace Squizzy.Services
                 }
                 if (oldResult.Time > newResult.Time && oldTrophies == newTrophies)
                 {
-                    return newPerfect
+                    return newResult.Perfect
                         ? builder
                             .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
                             $"This question is already perfect so you can't get any more trophies" +
@@ -126,6 +124,14 @@ namespace Squizzy.Services
              .WithDescription(description.ToString())
              .Build();
         }
+
+        public Embed GetDisabledDueToMaintenanceEmbed()
+            => new EmbedBuilder()
+                    .WithColor(EmbedColor.Failed)
+                    .WithTitle("**Something went wrong!**")
+                    .WithDescription("I am currently in maintenance mode!\n" +
+                                     "Go get a coffee, I'll be back in a moment :)")
+                    .Build();
 
         public Embed GetExceptionEmbed(SocketMessage msg, Exception ex)
             => new EmbedBuilder()

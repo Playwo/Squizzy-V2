@@ -41,10 +41,9 @@ namespace Squizzy.Services
                 type = _random.GetRandomCategory();
             }
 
-            var cursor = await _dbBackEnd.GetCategoryCollection(type).FindAsync(x => true);
-            var remainingQuestions = await cursor.ToListAsync();
+            var remainingQuestions = await LoadQuestionsAsync(type);
             remainingQuestions = remainingQuestions.OrderByDescending(y => player.AnsweredQuestions.Find(z => z.QuestionId == y.Id)?.Time ?? TimeSpan.MaxValue).ToList();
-            return remainingQuestions[_random.RandomInt(0, 5)]; //Return one of the 6 slowest questions
+            return remainingQuestions.ElementAt(_random.RandomInt(0, 5)); //Return one of the 6 slowest questions
         }
 
         public async Task<SquizzyContext> LoadContextAsync(SocketUserMessage message)
@@ -60,25 +59,20 @@ namespace Squizzy.Services
             return new SquizzyContext(shard, message, guildUser?.Guild, player, _provider);
         }
 
+        public async Task<IEnumerable<Question>> LoadQuestionsAsync(Category category) 
+            => await (await _dbBackEnd.GetCategoryCollection(category).FindAsync(x => true)).ToListAsync();
+
         #region Leaderboard
-        public List<SquizzyPlayer> LoadLeaderboard(Leaderboard type, int amount)
+        public List<SquizzyPlayer> LoadLeaderboard(Leaderboard type, int amount) 
+            => type switch
         {
-            switch (type)
-            {
-                case Leaderboard.Trophies:
-                    return LoadTrohiesLb(amount);
-                case Leaderboard.Magnets:
-                    return LoadMagnetsLb(amount);
-                case Leaderboard.Honor:
-                    return LoadHonorLb(amount);
-                case Leaderboard.AnsweredQuestions:
-                    return LoadTotalAnsweredQuestionsLb(amount);
-                case Leaderboard.SuccessRate:
-                    return LoadSuccessRateLb(amount);
-                default:
-                    return new List<SquizzyPlayer>();
-            }
-        }
+            Leaderboard.Trophies => LoadTrohiesLb(amount),
+            Leaderboard.Magnets => LoadMagnetsLb(amount),
+            Leaderboard.Honor => LoadHonorLb(amount),
+            Leaderboard.AnsweredQuestions => LoadTotalAnsweredQuestionsLb(amount),
+            Leaderboard.SuccessRate => LoadSuccessRateLb(amount),
+            _ => new List<SquizzyPlayer>(),
+        };
 
         private List<SquizzyPlayer> LoadSuccessRateLb(int amount)
             => _dbBackEnd.PlayerCollection.Find(x => true)
@@ -118,5 +112,29 @@ namespace Squizzy.Services
             await _dbBackEnd.PlayerCollection.ReplaceOneAsync(x => x.Id == player.Id, player, options); //Replace Document
         }
         #endregion
+
+        public async Task RecalculateTrophiesAsync()
+        {
+            var tempQuestionStore = new List<Question>();
+
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.General));
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker1));
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker2));
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapTD));
+
+            foreach(var player in (await _dbBackEnd.PlayerCollection.FindAsync(x => true)).ToEnumerable())
+            {
+                int trophies = 0;
+
+                foreach(var questionResult in player.AnsweredQuestions)
+                {
+                    var question = tempQuestionStore.Find(x => x.Type == questionResult.Category && x.Id == questionResult.QuestionId);
+                    trophies += questionResult.CalculateTrophies(question);
+                }
+
+                player.Trophies = trophies;
+                await SavePlayerAsync(player);
+            }
+        }
     }
 }

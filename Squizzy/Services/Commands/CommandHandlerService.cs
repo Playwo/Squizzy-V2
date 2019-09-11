@@ -18,6 +18,7 @@ namespace Squizzy.Services
         [Inject] private readonly LoggerService _logger;
         [Inject] private readonly IServiceProvider _provider;
         [Inject] private readonly EmbedService _embed;
+        [Inject] private readonly RessourceAdministrationService _ressourceAdministration;
 #pragma warning restore
 
         public override Task InitializeAsync()
@@ -38,17 +39,18 @@ namespace Squizzy.Services
                       {
                           return;
                       }
-                      if (msg.Channel is SocketDMChannel)
-                      {
-                          await msg.Channel.SendMessageAsync("I do not support DM commands!");
-                          return;
-                      }
 
                       if (msg is SocketUserMessage message)
                       {
 
                           if (!CommandUtilities.HasPrefix(msg.Content, _config["prefix"], out string output))
                           {
+                              return;
+                          }
+
+                          if (_ressourceAdministration.IsMaintenanceEnabled() && !RequireHelper.IsHelper(message.Author, _provider))
+                          {
+                              await message.Channel.SendMessageAsync(embed: _embed.GetDisabledDueToMaintenanceEmbed());
                               return;
                           }
 
@@ -63,14 +65,15 @@ namespace Squizzy.Services
                           {
                               return;
                           }
-
                           var response = _embed.GetFailedResultEmbed(failedResult);
                           await msg.Channel.SendMessageAsync(embed: response);
+                          _ressourceAdministration.UnOccupieContext(context);
                       }
                   }
                   catch(Exception ex)
                   {
                       await _logger.ReportErrorAsync(msg, ex);
+                      await msg.Channel.SendMessageAsync(embed: _embed.GetSorryEmbed());
                   }
               });
             return Task.CompletedTask;
@@ -83,6 +86,8 @@ namespace Squizzy.Services
 
             var message = new LogMessage(LogSeverity.Info, "CommandHandlerService", "Command Executed Successfully!");
             await _logger.LogAsync(message);
+
+            _ressourceAdministration.UnOccupieContext(ctx);
         }
 
         private async Task CommandExecutionFailedAsync(CommandExecutionFailedEventArgs args)
@@ -96,6 +101,9 @@ namespace Squizzy.Services
 
             var message = new LogMessage(LogSeverity.Warning, "CommandHandlerService", "An error occured while executing a command!", args.Result.Exception);
             await _logger.LogAsync(message);
+            await ctx.Channel.SendMessageAsync(embed: _embed.GetSorryEmbed());
+
+            _ressourceAdministration.UnOccupieContext(ctx);
         }
     }
 }

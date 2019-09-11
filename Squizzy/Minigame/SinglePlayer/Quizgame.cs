@@ -16,14 +16,14 @@ namespace Squizzy.Minigame
         private EmbedService _embed;
 
         public IMessageChannel Channel { get; }
-        public MinigamePlayer Player { get; }
+        public MinigamePlayer MinigamePlayer { get; }
         public Category QuestionType { get; }
         public int TotalQuestions { get; }
         public bool Cancelled { get; private set; }
 
         public Quizgame(MinigamePlayer player, IMessageChannel channel, Category type, int questionCount)
         {
-            Player = player;
+            MinigamePlayer = player;
             Channel = channel;
             QuestionType = type;
             TotalQuestions = questionCount;
@@ -35,7 +35,7 @@ namespace Squizzy.Minigame
             _interactivity = provider.GetService<InteractivityService>();
             _embed = provider.GetService<EmbedService>();
 
-            Player.OnInactive += HandleInactivityAsync;
+            MinigamePlayer.OnInactive += HandleInactivityAsync;
             return Task.CompletedTask;
         }
 
@@ -43,7 +43,7 @@ namespace Squizzy.Minigame
         {
             for (int i = 0; i < TotalQuestions; i++)
             {
-                var question = await _db.LoadNextQuestionAsync(Player.Player, QuestionType);
+                var question = await _db.LoadNextQuestionAsync(MinigamePlayer.Player, QuestionType);
 
                 var selection = new MessageSelectionBuilder<string>()
                     .WithSelectionEmbed(new EmbedBuilder()
@@ -55,7 +55,7 @@ namespace Squizzy.Minigame
                     .WithAllowCancel(allowCancel: true)
                     .WithTitle(question.Text)
                     .WithCancelDisplayName("Cancel (Counts as Wrong)")
-                    .WithUsers(Player.User)
+                    .WithUsers(MinigamePlayer.User)
                     .Build();
 
                 var result = await _interactivity.SendSelectionAsync(selection, Channel, TimeSpan.FromSeconds(question.Time));
@@ -64,17 +64,18 @@ namespace Squizzy.Minigame
                     ? QuestionResult.FromCorrect(question, result.Elapsed)
                     : QuestionResult.FromIncorrect(question);
 
-                Player.Player.ProcessAnsweredQuestion(newResult, out var oldResult);
-                var embed = _embed.MakeQuestionResultEmbed(question, oldResult, newResult);
+                MinigamePlayer.Player.ProcessAnsweredQuestion(question, newResult, out var oldResult, out int newTrophies, out int oldTrophies);
+
+                var embed = _embed.MakeQuestionResultEmbed(oldResult, newResult, oldTrophies, newTrophies);
                 await Channel.SendMessageAsync(embed: embed);
 
                 if (result.IsTimeouted)
                 {
-                    await Player.IncreaseInactivityAsync();
+                    await MinigamePlayer.IncreaseInactivityAsync();
                 }
                 else
                 {
-                    Player.ResetInactivity();
+                    MinigamePlayer.ResetInactivity();
                 }
                 if (Cancelled == true || result.IsCancelled)
                 {
@@ -93,7 +94,7 @@ namespace Squizzy.Minigame
 
         public async Task HandleInactivityAsync()
         {
-            await Channel.SendMessageAsync($"{Player.User.Mention} - The quiz has been cancelled due to inactivity!");
+            await Channel.SendMessageAsync($"{MinigamePlayer.User.Mention} - The quiz has been cancelled due to inactivity!");
             await CancelAsync();
         }
     }

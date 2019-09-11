@@ -15,6 +15,9 @@ namespace Squizzy.Entities
         public bool Correct { get; private set; }
 
         [BsonRequired]
+        public bool Perfect { get; private set; }
+
+        [BsonRequired]
         public TimeSpan Time { get; private set; }
 
         public QuestionResult(Question question, bool correct, TimeSpan time)
@@ -32,10 +35,32 @@ namespace Squizzy.Entities
             => new QuestionResult(question, true, time);
 
         public static bool ShouldReplace(QuestionResult oldResult, QuestionResult newResult)
-            => oldResult != null
-                ? newResult.Correct && oldResult.Correct
-                    ? newResult.Time < oldResult.Time
-                    : true
-                : true;
+            => newResult.Correct
+                ? oldResult.Correct
+                    ? newResult.Time < oldResult.Time //New Result Faster than Old Result
+                    : true //New Result True, Old Result Wrong
+                : false; // New Result Wrong
+
+                
+
+        public int CalculateTrophies(Question question)
+        {
+            if (!Correct)
+            {
+                Perfect = false;
+                return 0;
+            }
+
+            if (Time.TotalSeconds < 1.5)
+            {
+                Perfect = true;
+                return question.Reward;
+            }
+
+            double timeRange = question.Time - Time.TotalSeconds;
+            Perfect = false;
+
+            return (int) Math.Round(question.Reward / timeRange * Time.TotalSeconds);
+        }
     }
 }

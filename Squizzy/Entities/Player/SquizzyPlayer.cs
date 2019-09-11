@@ -41,7 +41,9 @@ namespace Squizzy.Entities
         public int TotalRankedQuestions => AnsweredQuestions.Count;
 
         [BsonIgnore]
-        public double SuccessRate => Math.Round(100d * (TotalCorrectQuestions / (double) TotalAnsweredQuestions), 2);
+        public double SuccessRate => TotalAnsweredQuestions > 0
+            ? Math.Round(100d * (TotalCorrectQuestions / (double) TotalAnsweredQuestions), 2)
+            : 0;
 
         public SquizzyPlayer(ulong id)
         {
@@ -51,7 +53,8 @@ namespace Squizzy.Entities
         public bool HasAnsweredQuestion(Question question)
             => AnsweredQuestions.Any(x => x.QuestionId == question.Id);
 
-        public void ProcessAnsweredQuestion(QuestionResult newResult, out QuestionResult oldResult)
+        public void ProcessAnsweredQuestion(Question question, QuestionResult newResult, out QuestionResult oldResult,
+                                            out int newTrophies, out int oldTrophies)
         {
             TotalAnsweredQuestions++;
             if (newResult.Correct)
@@ -59,11 +62,15 @@ namespace Squizzy.Entities
                 TotalCorrectQuestions++;
             }
 
-            oldResult = AnsweredQuestions.Find(x => x.QuestionId == newResult.QuestionId);
+            oldResult = AnsweredQuestions.Find(x => x.QuestionId == newResult.QuestionId) ?? QuestionResult.FromIncorrect(question);
+
+            oldTrophies = oldResult.CalculateTrophies(question);
+            newTrophies = newResult.CalculateTrophies(question);
 
             if (QuestionResult.ShouldReplace(oldResult, newResult))
             {
                 ReplaceResult(oldResult, newResult);
+                Trophies += newTrophies - oldTrophies;
             }
         }
 

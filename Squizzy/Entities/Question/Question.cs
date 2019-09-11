@@ -68,25 +68,5 @@ namespace Squizzy.Entities
                 .AddField(Text, GetOptionsMessage())
                 .WithFooter($"You have {Time} Seconds to answer! [Question {index}/{total}]")
                 .Build();
-
-        public int CalculateTrophies(QuestionResult result, out bool perfect)
-        {
-            if (!result.Correct)
-            {
-                perfect = false;
-                return 0;
-            }
-
-            if (result.Time.TotalSeconds < 1.5)
-            {
-                perfect = true;
-                return Reward;
-            }
-
-            double timeRange = Time - result.Time.TotalSeconds;
-            perfect = false;
-
-            return (int) Math.Round(Reward / timeRange * result.Time.TotalSeconds);
-        }
     }
 }

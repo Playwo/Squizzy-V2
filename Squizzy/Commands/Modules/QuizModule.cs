@@ -12,6 +12,7 @@ namespace Squizzy.Commands
         public MinigameService Minigame { get; set; }
 
         [Command("Quiz", "Question", "Questions", "Ask", "Q")]
+        [RequireFreeRessources(channel: true, user: true)]
         public Task QuizAsync(Category category, int amount = 3)
         {
             var player = new MinigamePlayer(Context.Player, Context.User);
