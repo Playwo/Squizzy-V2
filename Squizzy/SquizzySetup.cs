@@ -66,6 +66,7 @@ namespace Squizzy
             CommandService.AddTypeParser(new RoleParser());
             CommandService.AddTypeParser(new MessageParser());
             CommandService.AddTypeParser(new CategoryParser(), true);
+            CommandService.AddTypeParser(new StatisticTypeParser(), true);
             CommandService.AddTypeParser(new LeaderboardTypeParser());
             CommandService.AddTypeParser(new PlayerParser());
         }
