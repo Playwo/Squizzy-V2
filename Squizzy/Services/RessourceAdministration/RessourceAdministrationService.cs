@@ -8,7 +8,9 @@ namespace Squizzy.Services
 {
     public class RessourceAdministrationService : SquizzyService
     {
+#pragma warning disable
         [Inject] private readonly DiscordShardedClient _client;
+#pragma warning restore
 
         private ConcurrentDictionary<ulong, bool> BlockedUsers { get; set; }
         private ConcurrentDictionary<ulong, bool> BlockedChannels { get; set; }
