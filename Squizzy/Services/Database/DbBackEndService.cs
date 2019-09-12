@@ -49,21 +49,14 @@ namespace Squizzy.Services
             }
         }
 
-        public IMongoCollection<Question> GetCategoryCollection(Category type)
+        public IMongoCollection<Question> GetCategoryCollection(Category type) 
+            => type switch
         {
-            switch (type)
-            {
-                case Category.General:
-                    return General_Collection;
-                case Category.ScrapClicker1:
-                    return ScrapClicker1_Collection;
-                case Category.ScrapClicker2:
-                    return ScrapClicker2_Collection;
-                case Category.ScrapTD:
-                    return ScrapTD_Collection;
-                default:
-                    return null;
-            }
-        }
+            Category.General => General_Collection,
+            Category.ScrapClicker1 => ScrapClicker1_Collection,
+            Category.ScrapClicker2 => ScrapClicker2_Collection,
+            Category.ScrapTD => ScrapTD_Collection,
+            _ => null,
+        };
     }
 }
