@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Qmmands;
+using Squizzy.Extensions;
 using Squizzy.Entities;
+using Squizzy.Services;
+using System.Text;
 
 namespace Squizzy.Commands
 {
@@ -21,13 +24,13 @@ namespace Squizzy.Commands
         public override ValueTask<TypeParserResult<Category>> ParseAsync(Parameter parameter, string value, SquizzyContext context)
         {
             bool success = Enum.TryParse(value, out Category result);
-            
+
             if (success)
             {
                 return TypeParserResult<Category>.Successful(result);
             }
 
-            foreach(Category category in Enum.GetValues(typeof(Category)))
+            foreach (Category category in Enum.GetValues(typeof(Category)))
             {
                 success = CategoryShortcuts.TryGetValue(category, out string[] shortcuts);
 
@@ -41,7 +44,22 @@ namespace Squizzy.Commands
                     continue;
                 }
 
-                return TypeParserResult<Category>.Successful(category);
+                if (category != Category.Random)
+                {
+                    return TypeParserResult<Category>.Successful(category);
+                }
+
+                var _random = context.ServiceProvider.GetService<RandomizerService>();
+
+                return TypeParserResult<Category>.Successful(_random.GetRandomCategory());
+            }
+
+            var errorMessage = new StringBuilder()
+                .AppendLine("No category found matching your input!")
+                .AppendLine("Valid categories are:");
+            foreach (Category category in Enum.GetValues(typeof(Category)))
+            {
+                errorMessage.AppendLine($" => {category}");
             }
 
             return TypeParserResult<Category>.Unsuccessful("No category found matching your input!");

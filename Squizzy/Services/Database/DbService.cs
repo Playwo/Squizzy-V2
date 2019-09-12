@@ -40,11 +40,6 @@ namespace Squizzy.Services
 
         public async Task<Question> LoadNextQuestionAsync(SquizzyPlayer player, Category type)
         {
-            if (type == Category.Random)
-            {
-                type = _random.GetRandomCategory();
-            }
-
             var remainingQuestions = await LoadQuestionsAsync(type);
             remainingQuestions = remainingQuestions.OrderByDescending(y => player.AnsweredQuestions.Find(z => z.QuestionId == y.Id)?.Time ?? TimeSpan.MaxValue).ToList();
             return remainingQuestions.ElementAt(_random.RandomInt(0, 5)); //Return one of the 6 slowest questions
