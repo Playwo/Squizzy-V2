@@ -116,8 +116,17 @@ namespace Squizzy.Services
             await _dbBackEnd.PlayerCollection.ReplaceOneAsync(x => x.Id == player.Id, player, options); //Replace Document
         }
         #endregion
+        #region Count
+        public Task<long> CountPlayersAsync()
+            => _dbBackEnd.PlayerCollection.EstimatedDocumentCountAsync();
 
-        public async Task RecalculateTrophiesAsync()
+        public Task<long> CountQuestionsAsnyc(Category category)
+            => _dbBackEnd.GetCategoryCollection(category).EstimatedDocumentCountAsync();
+
+
+    #endregion
+
+    public async Task RecalculateTrophiesAsync()
         {
             var tempQuestionStore = new List<Question>();
 
