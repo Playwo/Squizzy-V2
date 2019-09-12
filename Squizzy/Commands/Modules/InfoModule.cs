@@ -32,7 +32,7 @@ namespace Squizzy.Commands
             var embed = new EmbedBuilder()
                 .WithColor(Color.Green)
                 .WithTitle("Thx for supporting me :)")
-                .WithDescription("https://wishes2.com/k9bV \n\n**Advice:**\nThe ad page is not made by me! Watch out not to download any content from that page! ")
+                .WithDescription("https://wishes2.com/k9bV \n\n**Advice:**\nIhave not made the ad page!\nWatch out not to download any content from that page! ")
                 .Build();
 
             Context.Player.Cooldown.SetCommandCooldown(Context.Command, TimeSpan.FromHours(12));
@@ -49,8 +49,5 @@ namespace Squizzy.Commands
 
             await ReplyAsync(embed: embed);
         }
-
-        [Command("Help", "HelpMe")]
-        public async Task HelpAsync() => await ReplyAsync("Still To Do!");
     }
 }

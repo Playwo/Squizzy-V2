@@ -123,6 +123,22 @@ namespace Squizzy.Services
         public Task<long> CountQuestionsAsnyc(Category category)
             => _dbBackEnd.GetCategoryCollection(category).EstimatedDocumentCountAsync();
 
+        public async Task<long> CountTotalQuestionsAsync()
+        {
+            long totalCount = 0;
+
+            foreach(Category category in Enum.GetValues(typeof(Category)))
+            {
+                if (category == Category.Random)
+                {
+                    continue;
+                }
+
+                totalCount += await CountQuestionsAsnyc(category);
+            }
+
+            return totalCount;
+        }
 
     #endregion
 
