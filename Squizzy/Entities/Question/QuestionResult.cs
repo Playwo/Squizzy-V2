@@ -43,22 +43,25 @@ namespace Squizzy.Entities
 
         public int CalculateTrophies(Question question)
         {
+            double perfectTime = 1.5d;
+            Perfect = false;
+
             if (!Correct)
             {
-                Perfect = false;
                 return 0;
             }
-
-            if (Time.TotalSeconds < 1.5)
+            if (Time.TotalSeconds < perfectTime)
             {
                 Perfect = true;
                 return question.Reward;
             }
 
-            double timeRange = question.Time - Time.TotalSeconds;
-            Perfect = false;
+            double factor = -Math.Log(0.3333) / (question.Time - perfectTime);
 
-            return (int) Math.Round(question.Reward / timeRange * Time.TotalSeconds);
+            int trophies = (int) Math.Floor(
+                (question.Reward) * Math.Pow(Math.E, -factor * (Time.TotalSeconds - perfectTime)));
+
+            return trophies;
         }
     }
 }
