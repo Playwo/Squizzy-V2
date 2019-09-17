@@ -6,12 +6,14 @@ using Squizzy.Services;
 
 namespace Squizzy.Commands
 {
+    [Name("Insights :eye: ")]
     [Group("GetValue", "Get", "Value")]
     public class InsightsModule : SquizzyModule
     {
         public DbService Db { get; set; }
 
         [Command("TotalPlayers", "TotalUsers", "PlayerCount", "UserCount", "Players", "Users")]
+        [Description("Get the total amount of Squizzy-Players")]
         public async Task SendPlayerCountAsync()
         {
             long playerCount = await Db.CountPlayersAsync();
@@ -24,7 +26,7 @@ namespace Squizzy.Commands
         }
 
         [Command("TotalQuestions", "QuestionCount", "Questions")]
-        [Priority(1)]
+        [Description("Get the total amount of questions in all categories")]
         public async Task SendTotalQuestionCountAsync()
         {
             long questionCount = await Db.CountTotalQuestionsAsync();
@@ -37,6 +39,8 @@ namespace Squizzy.Commands
         }
 
         [Command("TotalQuestions", "QuestionCount", "Questions")]
+        [Description("Get the amount of questions in a specific category")]
+        [Priority(1)]
         public async Task SendQuestionCountAsync(Category category)
         {
             long questionCount = await Db.CountQuestionsAsnyc(category);

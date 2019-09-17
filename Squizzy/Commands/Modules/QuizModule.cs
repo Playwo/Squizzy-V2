@@ -6,13 +6,16 @@ using Squizzy.Services;
 
 namespace Squizzy.Commands
 {
+    [Name("Quiz :mortar_board:")]
     public class QuizModule : SquizzyModule
     {
         public DbService Db { get; set; }
         public MinigameService Minigame { get; set; }
 
         [Command("Quiz", "Question", "Questions", "Ask", "Q")]
+        [Description("Start a singleplayer quiz game")]
         [RequireFreeRessources(RessourceType.Channel | RessourceType.User)]
+        [RequireMaintenance(false)]
         public Task QuizAsync(Category category, int amount = 3)
         {
             var player = new MinigamePlayer(Context.Player, Context.User);

@@ -11,12 +11,14 @@ using Squizzy.Services;
 
 namespace Squizzy.Commands
 {
+    [Name("Leaderboards :first_place:")]
     public class LeaderboardModule : SquizzyModule
     {
         public DbService Db { get; set; }
         public InteractivityService Interactivity { get; set; }
 
         [Command("Leaderboard", "Lb", "Leader", "Leaders")]
+        [Description("Get the player leaderboard for different statistic values")]
         public async Task GetLeaderboardAsync(LeaderboardType type)
         {
             var leaders = Db.LoadLeaderboard(type.Type, 100);

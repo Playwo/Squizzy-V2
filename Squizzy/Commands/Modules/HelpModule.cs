@@ -8,15 +8,19 @@ using Squizzy.Services;
 
 namespace Squizzy.Commands
 {
+    [Name("Help :question:")]
     public class HelpModule : SquizzyModule
     {
         public CommandService Command { get; set; }
 
         [Command("CommandHelp", "Help", "CmdHelp", "CHelp", "HelpMe", "HowDoesThisWork")]
+        [Description("Get help about a certain command")]
+        [Priority(1)]
         public Task SendCommandHelpAsync(Command command) 
             => ReplyAsync(embed: command.GetHelpEmbed());
 
         [Command("Help", "HelpMe", "HowDoesThisWork")]
+        [Description("Get the entire help page")]
         public async Task SendHelpAsync()
         {
             var helpBuilder = new EmbedBuilder();

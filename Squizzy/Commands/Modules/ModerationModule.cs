@@ -7,6 +7,7 @@ using Squizzy.Services;
 
 namespace Squizzy.Commands
 {
+    [Name("Moderation :pushpin: ")]
     public class ModerationModule : SquizzyModule
     {
         public DbService Db { get; set; }
@@ -14,6 +15,7 @@ namespace Squizzy.Commands
         public RessourceAdministrationService RessourceAdministration { get; set; }
 
         [Command("Recalculate", "Recalc")]
+        [Description("Recalculate all Trophies (After DB Change)")]
         [RequireMaintenance(true)]
         [RequireHelper]
         public async Task RecalculateTrophiesAsync()
@@ -36,6 +38,7 @@ namespace Squizzy.Commands
         }
 
         [Command("EnableMaintenance", "StartMaintenance")]
+        [Description("Enters the Maintenance Mode")]
         [RequireMaintenance(false)]
         [RequireHelper]
         public async Task EnableMaintenanceAsync()
@@ -74,6 +77,7 @@ namespace Squizzy.Commands
         }
 
         [Command("DisableMaintenance", "StopMaintenance")]
+        [Description("Disables the Maintenance Mode")]
         [RequireMaintenance(true)]
         [RequireHelper]
         public async Task DisableMaintenanceAsync()
