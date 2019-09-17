@@ -5,6 +5,7 @@ namespace Squizzy.Commands
 {
     public abstract class SquizzyCheck : CheckAttribute
     {
+        public abstract string Description { get; }
         public abstract ValueTask<CheckResult> CheckAsync(SquizzyContext context);
 
         public override ValueTask<CheckResult> CheckAsync(CommandContext context)

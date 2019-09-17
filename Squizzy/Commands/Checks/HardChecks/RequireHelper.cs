@@ -11,6 +11,8 @@ namespace Squizzy.Commands
 {
     public class RequireHelper : HardCheckAttribute
     {
+        public override string Description => $"This command can only be executed by helpers";
+
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context) 
             => IsHelper(context.User, context.ServiceProvider)
                 ? CheckResult.Successful

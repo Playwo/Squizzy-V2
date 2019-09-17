@@ -8,22 +8,20 @@ namespace Squizzy.Commands
 {
     public class RequireFreeRessources : SoftCheckAttribute
     {
-        public bool Guild { get; }
-        public bool Channel { get; }
-        public bool User { get; }
+        public RessourceType Type { get; }
 
-        public RequireFreeRessources(bool guild = false, bool channel = false, bool user = false)
+        public override string Description => $"The {Type} needs to be free from use";
+
+        public RequireFreeRessources(RessourceType type)
         {
-            Guild = guild;
-            Channel = channel;
-            User = user;
+            Type = type;
         }
 
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
         {
             var ressourceAdministration = context.ServiceProvider.GetService<RessourceAdministrationService>();
 
-            if (Guild)
+            if (Type.HasFlag(RessourceType.Guild))
             {
                 if (!ressourceAdministration.IsGuildOccupied(context.Guild))
                 {
@@ -35,7 +33,7 @@ namespace Squizzy.Commands
                 }
             }
 
-            if (Channel) 
+            if (Type.HasFlag(RessourceType.Channel)) 
             {
                 if (!ressourceAdministration.IsChannelOccupied(context.Channel as SocketChannel))
                 {
@@ -47,7 +45,7 @@ namespace Squizzy.Commands
                 }
             }
 
-            if (User)
+            if (Type.HasFlag(RessourceType.User))
             {
                 if (!ressourceAdministration.IsUserOccupied(context.User))
                 {

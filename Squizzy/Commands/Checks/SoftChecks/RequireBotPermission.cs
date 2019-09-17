@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Qmmands;
@@ -8,19 +9,40 @@ namespace Squizzy.Commands
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class RequireBotPermissionAttribute : SoftCheckAttribute
     {
-        public GuildPermission? GuildPermission { get; }
-        public ChannelPermission? ChannelPermission { get; }
+        public GuildPermission? GuildPerms { get; }
+        public ChannelPermission? ChannelPerms { get; }
+
+        public override string Description { get {
+
+                var builder = new StringBuilder();
+
+                if (GuildPerms.HasValue)
+                {
+                    builder.Append(GuildPerms.Value);
+                    if (ChannelPerms.HasValue)
+                    {
+                        builder.Append(", ");
+                    }
+                }
+
+                if (ChannelPerms.HasValue)
+                {
+                    builder.Append(ChannelPerms.Value);
+                }
+
+                return $"I need the {builder} permission(s)";
+        } }
 
         public RequireBotPermissionAttribute(GuildPermission permission)
         {
-            GuildPermission = permission;
-            ChannelPermission = null;
+            GuildPerms = permission;
+            ChannelPerms= null;
         }
 
         public RequireBotPermissionAttribute(ChannelPermission permission)
         {
-            ChannelPermission = permission;
-            GuildPermission = null;
+            ChannelPerms= permission;
+            GuildPerms= null;
         }
 
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
@@ -31,26 +53,26 @@ namespace Squizzy.Commands
                 guildUser = context.Guild.CurrentUser;
             }
 
-            if (GuildPermission.HasValue)
+            if (GuildPerms.HasValue)
             {
                 if (guildUser == null)
                 {
                     return CheckResult.Unsuccessful("Command must be used in a guild channel.");
                 }
 
-                if (!guildUser.GuildPermissions.Has(GuildPermission.Value))
+                if (!guildUser.GuildPermissions.Has(GuildPerms.Value))
                 {
-                    return CheckResult.Unsuccessful($"Bot requires guild permission {GuildPermission.Value}.");
+                    return CheckResult.Unsuccessful($"Bot requires guild permission {GuildPerms.Value}.");
                 }
             }
 
-            if (ChannelPermission.HasValue)
+            if (ChannelPerms.HasValue)
             {
                 var perms = context.Channel is IGuildChannel guildChannel ? guildUser.GetPermissions(guildChannel) : ChannelPermissions.All(context.Channel);
 
-                if (!perms.Has(ChannelPermission.Value))
+                if (!perms.Has(ChannelPerms.Value))
                 {
-                    return CheckResult.Unsuccessful($"Bot requires channel permission {ChannelPermission.Value}.");
+                    return CheckResult.Unsuccessful($"Bot requires channel permission {ChannelPerms.Value}.");
                 }
             }
 
