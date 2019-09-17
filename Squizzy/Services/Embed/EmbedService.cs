@@ -11,7 +11,7 @@ namespace Squizzy.Services
     public class EmbedService : SquizzyService
     {
         public Embed MakeQuestionResultEmbed(QuestionResult oldResult, QuestionResult newResult,
-                                             int oldTrophies,          int newTrophies)
+                                             int oldTrophies,          int newTrophies, int magnets)
         {
             var builder = new EmbedBuilder
             {
@@ -23,7 +23,10 @@ namespace Squizzy.Services
                         ? $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n" +
                           $"That means this question is now perfect. :crown:\n"
                         : $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n"
-                    : "You provided the wrong answer or cancelled! :x:\n",
+                    : "You provided the wrong answer or cancelled! :x:\n" +
+                    (magnets > 0
+                        ? $"You received {magnets} <:magnet:440898600738750465>"
+                        : $"You lost {magnets} <:magnet:440898600738750465>"),
                 Color = newResult.Correct
                     ? newTrophies > oldTrophies
                         ? newResult.Perfect && !oldResult.Perfect
@@ -37,10 +40,10 @@ namespace Squizzy.Services
             {
                 return newResult.Correct
                     ? builder
-                        .WithAppendDescription($"=> You won {newTrophies} Trophies")
+                        .WithAppendDescription($"=> You won {newTrophies} :trophy:")
                         .Build()
                     : builder
-                        .WithAppendDescription("=> You get no Trophies")
+                        .WithAppendDescription("=> You get no :trophy:")
                         .Build();
             }
             else
@@ -48,14 +51,14 @@ namespace Squizzy.Services
                 if (oldResult.Correct && !newResult.Correct)
                 {
                     return builder
-                        .WithAppendDescription($"=> You lose {oldTrophies} Trophies")
+                        .WithAppendDescription($"=> You lose {oldTrophies} :trophy:")
                         .Build();
                 }
                 if (oldResult.Time <= newResult.Time)
                 {
                     return builder
                         .WithAppendDescription("The answer is correct but you have answered this question slower than before!\n" +
-                        "=> You get no Trophies but you don't lose any either")
+                        "=> You get no :trophy: but you don't lose any either")
                         .Build();
                 }
                 if (oldResult.Time > newResult.Time && oldTrophies == newTrophies)
@@ -63,20 +66,20 @@ namespace Squizzy.Services
                     return newResult.Perfect
                         ? builder
                             .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
-                            $"This question is already perfect so you can't get any more trophies" +
-                            "=> You get no Trophies but you don't lose any either")
+                            $"This question is already perfect so you can't get any more :trophy:" +
+                            "=> You get no :trophy: but you don't lose any either")
                             .Build()
                         : builder
                             .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
-                            $"To earn more Trophies you need to be even faster" +
-                            "=> You get no Trophies but you don't lose any either")
+                            $"To earn more :trophy: you need to be even faster" +
+                            "=> You get no :trophy: but you don't lose any either")
                             .Build();
                 }
                 if (oldResult.Time > newResult.Time && oldTrophies < newTrophies)
                 {
                     return builder
                         .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
-                        $"=> You won {newTrophies - oldTrophies} Trophies")
+                        $"=> You won {newTrophies - oldTrophies} :trophy:")
                         .Build();
                 }
 

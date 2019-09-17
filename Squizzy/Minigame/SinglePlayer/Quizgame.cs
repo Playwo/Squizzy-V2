@@ -64,9 +64,9 @@ namespace Squizzy.Minigame
                     ? QuestionResult.FromCorrect(question, result.Elapsed)
                     : QuestionResult.FromIncorrect(question);
 
-                MinigamePlayer.Player.ProcessAnsweredQuestion(question, newResult, out var oldResult, out int newTrophies, out int oldTrophies);
+                MinigamePlayer.Player.ProcessAnsweredQuestion(question, newResult, out var oldResult, out int newTrophies, out int oldTrophies, out int magnets);
 
-                var embed = _embed.MakeQuestionResultEmbed(oldResult, newResult, oldTrophies, newTrophies);
+                var embed = _embed.MakeQuestionResultEmbed(oldResult, newResult, oldTrophies, newTrophies, magnets);
                 await Channel.SendMessageAsync(embed: embed);
 
                 if (result.IsTimeouted)

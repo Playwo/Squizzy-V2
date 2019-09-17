@@ -62,7 +62,7 @@ namespace Squizzy.Entities
             => AnsweredQuestions.Any(x => x.QuestionId == question.Id);
 
         public void ProcessAnsweredQuestion(Question question, QuestionResult newResult, out QuestionResult oldResult,
-                                            out int newTrophies, out int oldTrophies)
+                                            out int newTrophies, out int oldTrophies, out int magnets)
         {
             TotalAnsweredQuestions++;
             if (newResult.Correct)
@@ -75,7 +75,19 @@ namespace Squizzy.Entities
             oldTrophies = oldResult.CalculateTrophies(question);
             newTrophies = newResult.CalculateTrophies(question);
 
-            if (QuestionResult.ShouldReplace(oldResult, newResult))
+            magnets = (int)Math.Ceiling(newTrophies / 5.0);
+            if (magnets == 0)
+            {
+                magnets = -3;
+            }
+            if (Magnets - magnets < 0)
+            {
+                magnets = -Magnets;
+            }
+
+            Magnets += magnets;
+
+            if (newResult.IsBetterThan(oldResult))
             {
                 ReplaceResult(oldResult, newResult);
                 Trophies += newTrophies - oldTrophies;
