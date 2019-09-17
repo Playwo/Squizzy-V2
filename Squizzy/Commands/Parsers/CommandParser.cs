@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Qmmands;
 using Squizzy.Extensions;
 
-namespace Squizzy.Commands.Parsers
+namespace Squizzy.Commands
 {
     public class CommandParser : SquizzyParser<Command>
     {

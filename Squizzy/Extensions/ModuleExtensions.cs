@@ -15,7 +15,7 @@ namespace Squizzy.Extensions
 
             var checkResults = await Task.WhenAll(checks.Select(x => x.CheckAsync(context).AsTask()));
 
-            return checkResults.Any(x => !x.IsSuccessful);
+            return !checkResults.Any(x => !x.IsSuccessful);
         }
 
         public static async Task<bool> RunSoftChecksAsync(this Module module, SquizzyContext context)

@@ -12,7 +12,11 @@ namespace Squizzy.Commands
     {
         public CommandService Command { get; set; }
 
-        [Command("Help")]
+        [Command("CommandHelp", "Help", "CmdHelp", "CHelp", "HelpMe", "HowDoesThisWork")]
+        public Task SendCommandHelpAsync(Command command) 
+            => ReplyAsync(embed: command.GetHelpEmbed());
+
+        [Command("Help", "HelpMe", "HowDoesThisWork")]
         public async Task SendHelpAsync()
         {
             var helpBuilder = new EmbedBuilder();

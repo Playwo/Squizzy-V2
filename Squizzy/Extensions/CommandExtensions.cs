@@ -18,7 +18,7 @@ namespace Squizzy.Extensions
 
             var checkResults = await Task.WhenAll(checks.Select(x => x.CheckAsync(context).AsTask()));
 
-            return checkResults.Any(x => !x.IsSuccessful);
+            return !checkResults.Any(x => !x.IsSuccessful);
         }
 
         public static async Task<bool> RunSoftChecksAsync(this Command command, SquizzyContext context)
@@ -51,28 +51,26 @@ namespace Squizzy.Extensions
                 .WithColor(EmbedColor.Help)
                 .WithTitle($"{command.Name} Overview")
                 .AddField("Usage", GetHelp(command))
-                .AddField("Description", command.Description)
-                .AddField("Remarks", string.IsNullOrWhiteSpace(command.Remarks)
-                                     ? "None"
-                                     : command.Remarks);
+                .AddField("Description", command.Description ?? "None");
 
-            var checkBuilder = new StringBuilder();
-
-            if (command.Checks.Count == 0)
+            if (!string.IsNullOrWhiteSpace(command.Remarks))
             {
-                checkBuilder.Append("None");
-            }
-
-            foreach(var check in command.Checks)
-            {
-                checkBuilder.AppendLine($"- {(check as SquizzyCheck).Description}");
+                builder.AddField("Remarks", command.Remarks);
             }
 
 
+            if (command.Checks.Count > 0)
+            {
+                var checkBuilder = new StringBuilder();
 
-            return builder
-                .AddField("Checks", checkBuilder)
-                .Build();
+                foreach (var check in command.Checks)
+                {
+                    checkBuilder.AppendLine($"- {(check as SquizzyCheck).Description}");
+                }
+                builder.AddField("Checks", checkBuilder);
+            }
+
+            return builder .Build();
         }
     }
 }

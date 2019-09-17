@@ -5,8 +5,8 @@ namespace Squizzy.Services
     [Flags]
     public enum RessourceType
     {
-        User,
-        Channel,
-        Guild
+        User = 1,
+        Channel = 2,
+        Guild = 4,
     }
 }
