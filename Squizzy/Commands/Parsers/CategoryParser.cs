@@ -62,7 +62,7 @@ namespace Squizzy.Commands
                 errorMessage.AppendLine($" => {category}");
             }
 
-            return TypeParserResult<Category>.Unsuccessful("No category found matching your input!");
+            return TypeParserResult<Category>.Unsuccessful(errorMessage.ToString());
         }
     }
 }
