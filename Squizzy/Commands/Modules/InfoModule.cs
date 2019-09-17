@@ -27,20 +27,23 @@ namespace Squizzy.Commands
             await ReplyAsync(embed: embed);
         }
 
-        [Command("Advertisment", "Ad")]
-        [Description("Watch an Ad to support my development")]
-        [RequireFinishedCooldown]
-        public Task SendAdAsync()
+        [Command("Support")]
+        [Description("Support my development")]
+        public Task SendSupportPossibilitesAsync()
         {
             var embed = new EmbedBuilder()
                 .WithColor(EmbedColor.Success)
-                .WithTitle("Thx for supporting me :)")
-                .WithDescription("https://wishes2.com/k9bV \n\n**Advice:**\nIhave not made the ad page!\nWatch out not to download any content from that page! ")
+                .WithTitle("Consider Supporting me?")
+                .WithDescription("You can support me for free by watching an ad:\n" +
+                                 "https://wishes2.com/k9bV [Only 1 per day or I dont get anything, Please dont download anything on the ad page!]\n\n" +
+                                 "If you want to make me more productive help me out by buying me a coffee :)\n" +
+                                 "https://www.buymeacoffee.com/q7Iu6yQ8S \n\n" +
+                                 "This bot will always be free but I'm really grateful for everyone who supports me :gem:")
                 .Build();
 
-            Context.Player.Cooldown.SetCommandCooldown(Context.Command, TimeSpan.FromHours(12));
             return ReplyAsync(embed: embed);
         }
+
 
         [Command("Ping", "Connection", "Status")]
         [Description("Get my latency stats")]
