@@ -84,7 +84,7 @@ namespace Squizzy.Services
             var ctx = args.Context as SquizzyContext;
             await _db.SavePlayerAsync(ctx.Player);
 
-            var message = new LogMessage(LogSeverity.Info, "CommandHandlerService", "Command Executed Successfully!");
+            var message = new LogMessage(LogSeverity.Info, "CommandHandler", $"Executed {ctx.Command.Name} in {ctx.Channel.Name} for {ctx.User.Username}");
             await _logger.LogAsync(message);
 
             _ressourceAdministration.UnOccupieContext(ctx);
@@ -99,7 +99,7 @@ namespace Squizzy.Services
                 await _logger.ReportErrorAsync(ctx.Message, args.Result.Exception);
             }
 
-            var message = new LogMessage(LogSeverity.Warning, "CommandHandlerService", "An error occured while executing a command!", args.Result.Exception);
+            var message = new LogMessage(LogSeverity.Warning, "CommandHandler", $"Command {ctx.Command.Name} Execution failed in {ctx.Channel.Name} for {ctx.User.Username}", args.Result.Exception);
             await _logger.LogAsync(message);
             await ctx.Channel.SendMessageAsync(embed: _embed.GetSorryEmbed());
 

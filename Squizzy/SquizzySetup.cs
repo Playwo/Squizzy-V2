@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -19,6 +20,7 @@ namespace Squizzy
         public DiscordShardedClient Client { get; private set; }
         public CommandService CommandService { get; private set; }
         public IServiceProvider Provider { get; private set; }
+        public LoggerService Logger { get; private set; }
 
         public async Task InitializeAsync()
         {
@@ -27,7 +29,7 @@ namespace Squizzy
                 AlwaysDownloadUsers = true,
                 DefaultRetryMode = RetryMode.Retry502,
                 MessageCacheSize = 50,
-                LogLevel = LogSeverity.Verbose
+                LogLevel = LogSeverity.Info
             };
 
             var commandConfig = new CommandServiceConfiguration()
@@ -46,6 +48,8 @@ namespace Squizzy
             InitializeTypeParsers();
 
             await InitializeServicesAsync();
+
+            Logger = Provider.GetService<LoggerService>();
         }
 
         private async Task InitializeServicesAsync()
@@ -99,10 +103,14 @@ namespace Squizzy
 
         public async Task RunAsync()
         {
+            Client.GuildAvailable += Client_GuildAvailableAsync;
             await Client.LoginAsync(TokenType.Bot, Config["tokens:discord"]);
             await Client.StartAsync();
             await Client.SetGameAsync("Answering Questions", type: ActivityType.Playing);
             await Task.Delay(-1);
         }
+
+        private Task Client_GuildAvailableAsync(SocketGuild guild) 
+            => Logger.LogAsync(new LogMessage(LogSeverity.Verbose, "Gateway", $"Connected to {guild.Name} [{guild.Owner}]"));
     }
 }
