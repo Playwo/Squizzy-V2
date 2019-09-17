@@ -28,20 +28,18 @@ namespace Squizzy.Entities
             Correct = correct;
         }
 
+        public bool IsBetterThan(QuestionResult result)
+            => result.Correct
+                ? Correct
+                    ? result.Time < Time //New Result Faster than Old Result
+                    : true //New Result True, Old Result Wrong
+                : false; // New Result Wrong
+
         public static QuestionResult FromIncorrect(Question question)
             => new QuestionResult(question, false, TimeSpan.Zero);
 
         public static QuestionResult FromCorrect(Question question, TimeSpan time)
-            => new QuestionResult(question, true, time);
-
-        public static bool ShouldReplace(QuestionResult oldResult, QuestionResult newResult)
-            => newResult.Correct
-                ? oldResult.Correct
-                    ? newResult.Time < oldResult.Time //New Result Faster than Old Result
-                    : true //New Result True, Old Result Wrong
-                : false; // New Result Wrong
-
-                
+            => new QuestionResult(question, true, time);                
 
         public int CalculateTrophies(Question question)
         {
