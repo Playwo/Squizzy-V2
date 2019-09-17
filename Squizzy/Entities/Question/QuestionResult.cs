@@ -29,9 +29,9 @@ namespace Squizzy.Entities
         }
 
         public bool IsBetterThan(QuestionResult result)
-            => result.Correct
-                ? Correct
-                    ? result.Time < Time //New Result Faster than Old Result
+            => Correct
+                ? result.Correct
+                    ? Time < result.Time //New Result Faster than Old Result
                     : true //New Result True, Old Result Wrong
                 : false; // New Result Wrong
 
