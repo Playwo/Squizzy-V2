@@ -11,5 +11,6 @@ namespace Squizzy.Services
         public static Color Question => (Color) sys.Color.Orange;
         public static Color Error => (Color) sys.Color.DarkRed;
         public static Color Leaderboard => (Color) sys.Color.Gold;
+        public static Color Help => (Color) sys.Color.Aqua;
     }
 }
