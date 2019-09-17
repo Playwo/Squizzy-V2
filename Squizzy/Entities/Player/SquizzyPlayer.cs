@@ -80,7 +80,7 @@ namespace Squizzy.Entities
             {
                 magnets = -3;
             }
-            if (Magnets - magnets < 0)
+            if (Magnets + magnets < 0)
             {
                 magnets = -Magnets;
             }

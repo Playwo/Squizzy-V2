@@ -18,15 +18,15 @@ namespace Squizzy.Services
                 Title = newResult.Correct
                     ? "Correct! :D"
                     : "Wrong! :(",
-                Description = newResult.Correct
+                Description = (newResult.Correct
                     ? newResult.Perfect
                         ? $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n" +
                           $"That means this question is now perfect. :crown:\n"
                         : $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n"
-                    : "You provided the wrong answer or cancelled! :x:\n" +
+                    : "You provided the wrong answer or cancelled! :x:\n")  +
                     (magnets > 0
-                        ? $"You received {magnets} <:magnet:440898600738750465>"
-                        : $"You lost {magnets} <:magnet:440898600738750465>"),
+                        ? $"=> You received {magnets} <:magnet:440898600738750465>\n"
+                        : $"=> You lost {-magnets} <:magnet:440898600738750465>\n"),
                 Color = newResult.Correct
                     ? newTrophies > oldTrophies
                         ? newResult.Perfect && !oldResult.Perfect
