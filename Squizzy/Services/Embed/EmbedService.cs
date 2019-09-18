@@ -71,7 +71,7 @@ namespace Squizzy.Services
                             .Build()
                         : builder
                             .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
-                            $"To earn more :trophy: you need to be even faster" +
+                            $"To earn more :trophy: you need to be even faster\n" +
                             "=> You get no :trophy: but you don't lose any either")
                             .Build();
                 }
