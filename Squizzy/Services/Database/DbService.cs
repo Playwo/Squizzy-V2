@@ -69,15 +69,8 @@ namespace Squizzy.Services
             Leaderboard.Magnets => LoadMagnetsLb(amount),
             Leaderboard.Honor => LoadHonorLb(amount),
             Leaderboard.AnsweredQuestions => LoadTotalAnsweredQuestionsLb(amount),
-            Leaderboard.SuccessRate => LoadSuccessRateLb(amount),
             _ => new List<SquizzyPlayer>(),
         };
-
-        private List<SquizzyPlayer> LoadSuccessRateLb(int amount)
-            => _dbBackEnd.PlayerCollection.Find(x => true)
-                .SortByDescending(x => x.SuccessRate)
-                .Limit(amount)
-                .ToList();
 
         private List<SquizzyPlayer> LoadTrohiesLb(int amount)
             => _dbBackEnd.PlayerCollection.Find(x => true)

@@ -23,7 +23,6 @@ namespace Squizzy.Entities
         Trophies,
         Magnets,
         Honor,
-        SuccessRate,
         AnsweredQuestions
     }
 }

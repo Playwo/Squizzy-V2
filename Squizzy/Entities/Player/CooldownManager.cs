@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Newtonsoft.Json;
 using Qmmands;
 
 namespace Squizzy.Entities
 {
     public class CooldownManager
     {
-        private ConcurrentDictionary<string, DateTime> CommandUsage { get; }
+        [JsonRequired]
+        public ConcurrentDictionary<string, DateTime> CommandUsage { get; }
 
         public CooldownManager()
         {

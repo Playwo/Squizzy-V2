@@ -11,10 +11,10 @@ namespace Squizzy.Entities
         [BsonRequired]
         public Category Category { get; private set; }
 
-        [BsonRequired]
+        //[BsonRequired]
         public bool Correct { get; private set; }
 
-        [BsonRequired]
+        //[BsonRequired]
         public bool Perfect { get; private set; }
 
         [BsonRequired]

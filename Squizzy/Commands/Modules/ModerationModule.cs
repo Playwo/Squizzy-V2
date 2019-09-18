@@ -37,7 +37,7 @@ namespace Squizzy.Commands
             await ReplyAsync(embed: embed);
         }
 
-        [Command("EnableMaintenance", "StartMaintenance")]
+        [Command("EnableMaintenance", "StartMaintenance", "EnMain", "EnableMain", "EM")]
         [Description("Enters the Maintenance Mode")]
         [RequireMaintenance(false)]
         [RequireHelper]
@@ -76,7 +76,7 @@ namespace Squizzy.Commands
 
         }
 
-        [Command("DisableMaintenance", "StopMaintenance")]
+        [Command("DisableMaintenance", "StopMaintenance", "DisMain", "DisableMain", "DM")]
         [Description("Disables the Maintenance Mode")]
         [RequireMaintenance(true)]
         [RequireHelper]

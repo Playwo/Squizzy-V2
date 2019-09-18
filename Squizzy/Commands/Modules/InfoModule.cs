@@ -11,7 +11,7 @@ namespace Squizzy.Commands
     {
         public DbBackEndService DbBackend { get; set; }
 
-        [Command("Invite", "Inv")]
+        [Command("Invite", "Inv", "InviteLink", "Links", "Link")]
         [Description("Get the bots invite link")]
         public async Task SendInviteAsync()
         {
@@ -20,14 +20,14 @@ namespace Squizzy.Commands
                 .WithColor(EmbedColor.Success)
                 .AddField("Squizzy Invite Link", "https://discordapp.com/oauth2/authorize?client_id=529241818143916052&scope=bot&permissions=388160")
                 .AddField("Officical Scrap Discord", "https://discord.gg/W3d9Jvx")
-                .AddField("Official Scrap Wiki", "http://official-scrap-2.wikia.com/wiki/Official_Scrap_2_Wiki")
+                .AddField("Official Scrap Wiki", "https://official-scrap-2.fandom.com/wiki/")
                 .AddField("Suggestions / Bug-Reports", "https://discord.gg/YzEuqpk")
                 .Build();
 
             await ReplyAsync(embed: embed);
         }
 
-        [Command("Support")]
+        [Command("Support", "Donate")]
         [Description("Support my development")]
         public Task SendSupportPossibilitesAsync()
         {

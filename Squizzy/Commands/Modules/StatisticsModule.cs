@@ -29,7 +29,7 @@ namespace Squizzy.Commands
                                   $"__**Questions**__\n" +
                                   $"Total Answered: {player.TotalAnsweredQuestions}\n" +
                                   $"Total Correct: {player.TotalCorrectQuestions}\n" +
-                                  $"Success Rate: {player.SuccessRate}\n" +
+                                  $"Success Rate: {player.SuccessRate}%\n" +
                                   $"Average Answer Time {player.AverageAnswerTime} seconds")
                         .AddField($"{player.Honor} :gem:",
                                   $"Soon...")

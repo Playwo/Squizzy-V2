@@ -44,7 +44,9 @@ namespace Squizzy.Entities
         public int TotalRankedQuestions => AnsweredQuestions.Count;
 
         [BsonIgnore]
-        public double AverageAnswerTime => Math.Round(AnsweredQuestions.Sum(x => x.Time.TotalSeconds) / AnsweredQuestions.Count, 3);
+        public double AverageAnswerTime => AnsweredQuestions.Count > 0
+            ? Math.Round(AnsweredQuestions.Sum(x => x.Time.TotalSeconds) / AnsweredQuestions.Count, 3)
+            : 0;
 
         [BsonIgnore]
         public double SuccessRate => TotalAnsweredQuestions > 0
