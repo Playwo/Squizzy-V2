@@ -17,7 +17,7 @@ namespace Squizzy.Commands
         [Command("Statistics", "Stats", "Stat")]
         [Description("Get quiz statistics about someone else")]
         [Priority(1)]
-        public async Task SendPlayerStatisticsAsync(SquizzyPlayer player, StatisticsType type = StatisticsType.General)
+        public async Task SendPlayerStatisticsAsync([Name("Player")]SquizzyPlayer player, [Name("Type")]StatisticsType type = StatisticsType.General)
         {
             switch (type)
             {
@@ -76,7 +76,7 @@ namespace Squizzy.Commands
 
         [Command("Statistics", "Stats", "Stat")]
         [Description("Get your quiz statistics")]
-        public Task SendPlayerStatisticsAsync(StatisticsType type = StatisticsType.General)
+        public Task SendPlayerStatisticsAsync([Name("Type")]StatisticsType type = StatisticsType.General)
             => SendPlayerStatisticsAsync(Context.Player, type);
     }
 }

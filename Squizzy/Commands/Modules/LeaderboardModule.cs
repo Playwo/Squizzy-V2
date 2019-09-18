@@ -19,7 +19,7 @@ namespace Squizzy.Commands
 
         [Command("Leaderboard", "Lb", "Leader", "Leaders")]
         [Description("Get the player leaderboard for different statistic values")]
-        public async Task GetLeaderboardAsync(LeaderboardType type)
+        public async Task GetLeaderboardAsync([Name("Type")]LeaderboardType type)
         {
             var leaders = Db.LoadLeaderboard(type.Type, 100);
 

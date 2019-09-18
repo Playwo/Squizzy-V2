@@ -54,7 +54,7 @@ namespace Squizzy.Commands
         [Command("TotalQuestions", "QuestionCount", "Questions")]
         [Description("Get the amount of questions in a specific category")]
         [Priority(1)]
-        public async Task SendQuestionCountAsync(Category category)
+        public async Task SendQuestionCountAsync([Name("Category")]Category category)
         {
             long questionCount = await Db.CountQuestionsAsync(category);
 

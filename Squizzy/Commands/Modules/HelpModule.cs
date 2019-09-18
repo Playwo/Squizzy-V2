@@ -16,7 +16,7 @@ namespace Squizzy.Commands
         [Command("CommandHelp", "Help", "CmdHelp", "CHelp", "HelpMe", "HowDoesThisWork")]
         [Description("Get help about a certain command")]
         [Priority(1)]
-        public Task SendCommandHelpAsync(Command command) 
+        public Task SendCommandHelpAsync([Name("Command")]Command command) 
             => ReplyAsync(embed: command.GetHelpEmbed());
 
         [Command("Help", "HelpMe", "HowDoesThisWork")]

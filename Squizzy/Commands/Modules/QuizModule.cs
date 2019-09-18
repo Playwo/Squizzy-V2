@@ -16,7 +16,7 @@ namespace Squizzy.Commands
         [Description("Start a singleplayer quiz game")]
         [RequireFreeRessources(RessourceType.Channel | RessourceType.User)]
         [RequireMaintenance(false)]
-        public Task QuizAsync(Category category, int amount = 3)
+        public Task QuizAsync([Name("Category")]Category category, [Name("Amount")]int amount = 3)
         {
             var player = new MinigamePlayer(Context.Player, Context.User);
             var game = new Quizgame(player, Context.Channel, category, amount);
