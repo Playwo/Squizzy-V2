@@ -104,7 +104,6 @@ namespace Squizzy.Services
 
             var message = new LogMessage(LogSeverity.Warning, "CommandHandler", $"Command {ctx.Command.Name} Execution failed in {ctx.Channel.Name} for {ctx.User.Username}", args.Result.Exception);
             await _logger.LogAsync(message);
-            await ctx.Channel.SendMessageAsync(embed: _embed.GetSorryEmbed());
 
             _ressourceAdministration.UnOccupieContext(ctx);
         }

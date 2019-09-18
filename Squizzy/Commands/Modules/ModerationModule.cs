@@ -17,6 +17,7 @@ namespace Squizzy.Commands
         [Command("Recalculate", "Recalc")]
         [Description("Recalculate all Trophies (After DB Change)")]
         [RequireMaintenance(true)]
+        [RequireFreeRessources(RessourceType.Global)]
         [RequireHelper]
         public async Task RecalculateTrophiesAsync()
         {

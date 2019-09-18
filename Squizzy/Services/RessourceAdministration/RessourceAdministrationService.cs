@@ -15,6 +15,8 @@ namespace Squizzy.Services
         private ConcurrentDictionary<ulong, bool> BlockedUsers { get; set; }
         private ConcurrentDictionary<ulong, bool> BlockedChannels { get; set; }
         private ConcurrentDictionary<ulong, bool> BlockedGuilds { get; set; }
+        private bool BlockedGlobally { get; set; }
+        private readonly object globalLock = new object();
         private bool MaintenanceEnabled { get; set; }
         private readonly object maintenanceLock = new object();
 
@@ -30,7 +32,7 @@ namespace Squizzy.Services
             return Task.CompletedTask;
         }
 
-        public bool IsUserOccupied(SocketUser user) 
+        public bool IsUserOccupied(SocketUser user)
             => BlockedUsers.TryGetValue(user.Id, out _);
 
         public bool IsChannelOccupied(SocketChannel channel)
@@ -57,55 +59,81 @@ namespace Squizzy.Services
         public void UnOccupieGuild(SocketGuild guild)
             => BlockedGuilds.TryRemove(guild.Id, out _);
 
-        public async Task EnableMaintenanceAsync()
+        public void BlockGlobally()
         {
-            await _client.SetStatusAsync(UserStatus.DoNotDisturb);
-            await _client.SetGameAsync("Maintenance Break!", type: ActivityType.Watching);
-            await WaitForCommandsToEndAsync();
-
-            lock (maintenanceLock)
+            lock (globalLock)
             {
-                MaintenanceEnabled = true;
+                BlockedGlobally = true;
+            }
+        }
+        public void UnBlockGlobally()
+        {
+            lock (globalLock)
+            {
+                BlockedGlobally = false;
             }
         }
 
-        public async Task DisableMaintenanceAsync()
+        public bool IsBlockedGlobally
         {
-            if (!MaintenanceEnabled)
-            {
-                return;
-            }
-
-            await _client.SetGameAsync("Answering Questions", type: ActivityType.Playing);
-            await _client.SetStatusAsync(UserStatus.Online);
-
-            lock (maintenanceLock)
-            {
-                MaintenanceEnabled = false;
+            get {
+                lock (globalLock)
+                {
+                    return BlockedGlobally;
+                }
             }
         }
 
-        public bool IsMaintenanceEnabled()
-        {
-            lock (maintenanceLock)
-            {
-                return MaintenanceEnabled;
-            }    
-        }
 
-        public void UnOccupieContext(SquizzyContext context)
-        {
-            UnOccupieGuild(context.Guild);
-            UnOccupieChannel(context.Channel as SocketChannel);
-            UnOccupieUser(context.User);
-        }
+public async Task EnableMaintenanceAsync()
+{
+    await _client.SetStatusAsync(UserStatus.DoNotDisturb);
+    await _client.SetGameAsync("Maintenance Break!", type: ActivityType.Watching);
+    await WaitForCommandsToEndAsync();
 
-        private async Task WaitForCommandsToEndAsync()
-        {
-            while (RunningOccupations > 0)
-            {
-                await Task.Delay(100);
-            }
-        }
+    lock (maintenanceLock)
+    {
+        MaintenanceEnabled = true;
+    }
+}
+
+public async Task DisableMaintenanceAsync()
+{
+    if (!MaintenanceEnabled)
+    {
+        return;
+    }
+
+    await _client.SetGameAsync("Answering Questions", type: ActivityType.Playing);
+    await _client.SetStatusAsync(UserStatus.Online);
+
+    lock (maintenanceLock)
+    {
+        MaintenanceEnabled = false;
+    }
+}
+
+public bool IsMaintenanceEnabled()
+{
+    lock (maintenanceLock)
+    {
+        return MaintenanceEnabled;
+    }
+}
+
+public void UnOccupieContext(SquizzyContext context)
+{
+    UnOccupieGuild(context.Guild);
+    UnOccupieChannel(context.Channel as SocketChannel);
+    UnOccupieUser(context.User);
+}
+
+private async Task WaitForCommandsToEndAsync()
+{
+    while (RunningOccupations > 0)
+    {
+        await Task.Delay(100);
+    }
+}
     }
 }

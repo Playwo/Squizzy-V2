@@ -8,5 +8,6 @@ namespace Squizzy.Services
         User = 1,
         Channel = 2,
         Guild = 4,
+        Global = 8,
     }
 }

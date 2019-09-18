@@ -22,24 +22,14 @@ namespace Squizzy.Services
 
         public Task LogAsync(LogMessage arg)
         {
-            switch (arg.Severity)
+            Console.ForegroundColor = arg.Severity switch
             {
-                case LogSeverity.Critical:
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    break;
-                case LogSeverity.Error:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case LogSeverity.Warning:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case LogSeverity.Info:
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    break;
-                default:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-            }
+                LogSeverity.Critical => ConsoleColor.DarkRed,
+                LogSeverity.Error => ConsoleColor.Red,
+                LogSeverity.Warning => ConsoleColor.Yellow,
+                LogSeverity.Info => ConsoleColor.Blue,
+                _ => ConsoleColor.Green,
+            };
             Console.WriteLine(arg.ToString(builder: null));
             return Task.CompletedTask;
         }

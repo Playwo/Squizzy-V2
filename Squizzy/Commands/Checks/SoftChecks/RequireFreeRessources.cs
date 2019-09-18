@@ -58,6 +58,13 @@ namespace Squizzy.Commands
                 
             }
 
+            if (Type.HasFlag(RessourceType.Global))
+            {
+                if (ressourceAdministration.IsBlockedGlobally) {
+                    return CheckResult.Unsuccessful("This command can only run once at a time");
+                }
+            }
+
             return CheckResult.Successful;
         }
     }
