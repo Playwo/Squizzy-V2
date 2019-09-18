@@ -51,6 +51,7 @@ namespace Squizzy.Extensions
                 .WithColor(EmbedColor.Help)
                 .WithTitle($"{command.Name} Overview")
                 .AddField("Usage", GetHelp(command))
+                .AddField("Aliases", $"{string.Join(", ", command.Aliases)}")
                 .AddField("Description", command.Description ?? "None");
 
             if (!string.IsNullOrWhiteSpace(command.Remarks))
