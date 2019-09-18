@@ -59,7 +59,7 @@ namespace Squizzy.Entities
             double factor = -Math.Log(0.3333) / (question.Time - perfectTime);
 
             int trophies = (int) Math.Floor(
-                (question.Reward) * Math.Pow(Math.E, -factor * (Time.TotalSeconds - perfectTime)));
+                question.Reward * Math.Pow(Math.E, -factor * (Time.TotalSeconds - perfectTime)));
 
             return trophies;
         }

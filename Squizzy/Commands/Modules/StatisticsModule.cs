@@ -49,7 +49,7 @@ namespace Squizzy.Commands
                             continue;
                         }
 
-                        long categoryAmount = await Db.CountQuestionsAsnyc(category);
+                        long categoryAmount = await Db.CountQuestionsAsync(category);
                         int rankedAmount = player.AnsweredQuestions.Count(x => x.Category == category);
                         int perfectAmount = player.AnsweredQuestions.Count(x => x.Category == category && x.Perfect);
                         rankedDescription.AppendLine($"{category} : {rankedAmount} [{Math.Round((double)100*rankedAmount / categoryAmount, 1)}%]");
