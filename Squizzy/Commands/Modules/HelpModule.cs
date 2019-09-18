@@ -13,7 +13,7 @@ namespace Squizzy.Commands
     {
         public CommandService Command { get; set; }
 
-        [Command("CommandHelp", "Help", "CmdHelp", "CHelp", "HelpMe", "HowDoesThisWork")]
+        [Command("CommandHelp", "CommandInfo", "CmdInfo", "Help", "CmdHelp","CInfo" ,"CHelp", "HelpMe", "HowDoesThisWork")]
         [Description("Get help about a certain command")]
         [Priority(1)]
         public Task SendCommandHelpAsync([Name("Command")]Command command) 

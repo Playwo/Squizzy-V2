@@ -7,7 +7,6 @@ using Squizzy.Services;
 namespace Squizzy.Commands
 {
     [Name("Insights :eye: ")]
-    [Group("GetValue", "Get", "Value")]
     public class InsightsModule : SquizzyModule
     {
         public DbService Db { get; set; }
