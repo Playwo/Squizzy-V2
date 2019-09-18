@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using InteractivityAddon;
 using InteractivityAddon.Selection;
-using Microsoft.Extensions.DependencyInjection;
 using Squizzy.Entities;
+using Squizzy.Extensions;
 using Squizzy.Services;
 
 namespace Squizzy.Minigame
@@ -14,6 +15,7 @@ namespace Squizzy.Minigame
         private DbService _db;
         private InteractivityService _interactivity;
         private EmbedService _embed;
+        private RandomizerService _random;
 
         public IMessageChannel Channel { get; }
         public MinigamePlayer MinigamePlayer { get; }
@@ -34,6 +36,7 @@ namespace Squizzy.Minigame
             _db = provider.GetService<DbService>();
             _interactivity = provider.GetService<InteractivityService>();
             _embed = provider.GetService<EmbedService>();
+            _random = provider.GetService<RandomizerService>();
 
             MinigamePlayer.OnInactive += HandleInactivityAsync;
             return Task.CompletedTask;
@@ -51,8 +54,8 @@ namespace Squizzy.Minigame
                     .WithColor(Color.Blue)
                     .WithTitle($"{question.Type} Question #{question.Id}")
                     .WithFooter($"You have {question.Time} seconds to answer. [Question {i + 1}/{TotalQuestions}]"))
-                    .WithValues(question.Options)
-                    .WithAllowCancel(allowCancel: true)
+                    .WithValues(question.Options.Shuffle(_random.Generator).ToList())
+                    .WithAllowCancel(true)
                     .WithTitle(question.Text)
                     .WithCancelDisplayName("Cancel (Counts as Wrong)")
                     .WithUsers(MinigamePlayer.User)

@@ -8,7 +8,7 @@ namespace Squizzy.Services
 {
     public class RandomizerService : SquizzyService
     {
-        private Random Generator { get; set; }
+        public Random Generator { get; private set; }
 
         public override Task InitializeAsync()
         {
