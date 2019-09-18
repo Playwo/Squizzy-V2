@@ -15,7 +15,7 @@ namespace Squizzy.Entities
         [BsonRequired]
         public string Text { get; private set; }
 
-        [BsonIgnore]
+        [BsonRequired]
         public Category Type { get; set; }
 
         [BsonRequired]
