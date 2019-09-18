@@ -28,12 +28,12 @@ namespace Squizzy.Entities
             Correct = correct;
         }
 
-        public bool IsBetterThan(QuestionResult result)
+        public bool HasToReplace(QuestionResult result)
             => Correct
                 ? result.Correct
                     ? Time < result.Time //New Result Faster than Old Result
                     : true //New Result True, Old Result Wrong
-                : false; // New Result Wrong
+                : result.Correct;  // New Result Wrong => Save if old one was right => Trophy loss
 
         public static QuestionResult FromIncorrect(Question question)
             => new QuestionResult(question, false, TimeSpan.Zero);

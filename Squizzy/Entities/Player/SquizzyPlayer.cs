@@ -89,7 +89,7 @@ namespace Squizzy.Entities
 
             Magnets += magnets;
 
-            if (newResult.IsBetterThan(oldResult))
+            if (newResult.HasToReplace(oldResult))
             {
                 ReplaceResult(oldResult, newResult);
                 Trophies += newTrophies - oldTrophies;
