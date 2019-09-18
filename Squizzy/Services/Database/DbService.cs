@@ -38,6 +38,18 @@ namespace Squizzy.Services
             return question;
         }
 
+        public async Task<List<Question>> LoadAllQuestionsAsync()
+        {
+            var tempQuestionStore = new List<Question>();
+
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.General));
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker1));
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker2));
+            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapTD));
+
+            return tempQuestionStore;
+        }
+
         public async Task<Question> LoadNextQuestionAsync(SquizzyPlayer player, Category type)
         {
             var remainingQuestions = await LoadQuestionsAsync(type);
@@ -59,7 +71,7 @@ namespace Squizzy.Services
         }
 
         public async Task<IEnumerable<Question>> LoadQuestionsAsync(Category category) 
-            => await (await _dbBackEnd.GetCategoryCollection(category).FindAsync(x => true)).ToListAsync();
+            => (await _dbBackEnd.GetCategoryCollection(category).FindAsync(x => true)).ToEnumerable();
 
         #region Leaderboard
         public List<SquizzyPlayer> LoadLeaderboard(Leaderboard type, int amount) 
@@ -105,10 +117,13 @@ namespace Squizzy.Services
         }
         #endregion
         #region Count
+        public async Task<int> CountMaximumTrophiesAsync()
+            => (await LoadAllQuestionsAsync()).Sum(x => x.Reward);
+
         public Task<long> CountPlayersAsync()
             => _dbBackEnd.PlayerCollection.EstimatedDocumentCountAsync();
 
-        public Task<long> CountQuestionsAsnyc(Category category)
+        public Task<long> CountQuestionsAsync(Category category)
             => _dbBackEnd.GetCategoryCollection(category).EstimatedDocumentCountAsync();
 
         public async Task<long> CountTotalQuestionsAsync()
@@ -122,7 +137,7 @@ namespace Squizzy.Services
                     continue;
                 }
 
-                totalCount += await CountQuestionsAsnyc(category);
+                totalCount += await CountQuestionsAsync(category);
             }
 
             return totalCount;

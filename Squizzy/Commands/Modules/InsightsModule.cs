@@ -12,6 +12,19 @@ namespace Squizzy.Commands
     {
         public DbService Db { get; set; }
 
+        [Command("MaximumTrophies", "MaxTrophies", "MaxT", "MTrophies", "MT")]
+        [Description("Get the maximum amount of trophies you can theoretically reach")]
+        public async Task SendMaximumTrophiesAsync()
+        {
+            int maximumTrophies = await Db.CountMaximumTrophiesAsync();
+
+            await ReplyAsync(embed: new EmbedBuilder()
+                .WithColor(EmbedColor.Statistic)
+                .WithTitle("Maximum achievable trophy count")
+                .WithDescription($"{maximumTrophies} :trophy:")
+                .Build());
+        }
+
         [Command("TotalPlayers", "TotalUsers", "PlayerCount", "UserCount", "Players", "Users")]
         [Description("Get the total amount of Squizzy-Players")]
         public async Task SendPlayerCountAsync()
@@ -21,7 +34,7 @@ namespace Squizzy.Commands
             await ReplyAsync(embed: new EmbedBuilder()
                 .WithColor(EmbedColor.Statistic)
                 .WithTitle("Total Player Count")
-                .WithDescription($"{playerCount}")
+                .WithDescription($"{playerCount} :raising_hand:")
                 .Build());
         }
 
@@ -34,7 +47,7 @@ namespace Squizzy.Commands
             await ReplyAsync(embed: new EmbedBuilder()
                 .WithColor(EmbedColor.Statistic)
                 .WithTitle($"Total Amount of Questions in all categories")
-                .WithDescription($"{questionCount}")
+                .WithDescription($"{questionCount} x :question:")
                 .Build());
         }
 
@@ -43,12 +56,12 @@ namespace Squizzy.Commands
         [Priority(1)]
         public async Task SendQuestionCountAsync(Category category)
         {
-            long questionCount = await Db.CountQuestionsAsnyc(category);
+            long questionCount = await Db.CountQuestionsAsync(category);
 
             await ReplyAsync(embed: new EmbedBuilder()
                 .WithColor(EmbedColor.Statistic)
                 .WithTitle($"Total Amount of {category} Questions")
-                .WithDescription($"{questionCount}")
+                .WithDescription($"{questionCount} x :question:")
                 .Build());
         }
     }
