@@ -82,7 +82,10 @@ namespace Squizzy.Services
         private async Task CommandExecutedAsync(CommandExecutedEventArgs args)
         {
             var ctx = args.Context as SquizzyContext;
-            await _db.SavePlayerAsync(ctx.Player);
+            if (!_ressourceAdministration.IsMaintenanceEnabled())
+            {
+                await _db.SavePlayerAsync(ctx.Player);
+            }
 
             var message = new LogMessage(LogSeverity.Info, "CommandHandler", $"Executed {ctx.Command.Name} in {ctx.Channel.Name} for {ctx.User.Username}");
             await _logger.LogAsync(message);
