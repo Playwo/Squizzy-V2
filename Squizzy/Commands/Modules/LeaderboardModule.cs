@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Discord;
 using InteractivityAddon;
 using InteractivityAddon.Pagination;
 using Qmmands;
@@ -18,6 +19,7 @@ namespace Squizzy.Commands
         public InteractivityService Interactivity { get; set; }
 
         [Command("Leaderboard", "Lb", "Leader", "Leaders")]
+        [RequireBotPermission(ChannelPermission.ManageMessages)]
         [Description("Get the player leaderboard for different statistic values")]
         public async Task GetLeaderboardAsync([Name("Type")]LeaderboardType type)
         {

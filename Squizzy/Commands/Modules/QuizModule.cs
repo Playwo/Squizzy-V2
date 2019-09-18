@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Discord;
 using Qmmands;
 using Squizzy.Entities;
 using Squizzy.Minigame;
@@ -15,6 +16,7 @@ namespace Squizzy.Commands
         [Command("Quiz", "Question", "Questions", "Ask", "Q")]
         [Description("Start a singleplayer quiz game")]
         [RequireFreeRessources(RessourceType.Channel | RessourceType.User)]
+        [RequireBotPermission(ChannelPermission.ManageMessages)]
         [RequireMaintenance(false)]
         public Task QuizAsync([Name("Category")]Category category, [Range(1,50)][Name("Amount")]int amount = 3)
         {
