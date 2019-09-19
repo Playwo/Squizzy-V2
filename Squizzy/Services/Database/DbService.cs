@@ -121,10 +121,10 @@ namespace Squizzy.Services
             => (await LoadAllQuestionsAsync()).Sum(x => x.Reward);
 
         public Task<long> CountPlayersAsync()
-            => _dbBackEnd.PlayerCollection.EstimatedDocumentCountAsync();
+            => _dbBackEnd.PlayerCollection.CountDocumentsAsync(x => true);
 
         public Task<long> CountQuestionsAsync(Category category)
-            => _dbBackEnd.GetCategoryCollection(category).EstimatedDocumentCountAsync();
+            => _dbBackEnd.GetCategoryCollection(category).CountDocumentsAsync(x => true);
 
         public async Task<long> CountTotalQuestionsAsync()
         {
