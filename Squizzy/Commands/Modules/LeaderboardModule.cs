@@ -23,11 +23,11 @@ namespace Squizzy.Commands
         [Description("Get the player leaderboard for different statistic values")]
         public async Task GetLeaderboardAsync([Name("Type")]LeaderboardType type)
         {
-            var leaders = Db.LoadLeaderboard(type.Type, 100);
+            var leaders = Db.LoadLeaderboard(type.Type, 50);
 
-            int maximum = leaders.Count < 100
+            int maximum = leaders.Count < 50
                 ? leaders.Count - 1
-                : 99;
+                : 49;
 
             var pages = new List<PageBuilder>();
 
