@@ -63,7 +63,7 @@ namespace Squizzy.Entities
         public bool HasAnsweredQuestion(Question question)
             => AnsweredQuestions.Any(x => x.QuestionId == question.Id);
 
-        public void ProcessAnsweredQuestion(Question question, QuestionResult newResult, out QuestionResult oldResult,
+        public void ProcessAnsweredQuestion(Question question, QuestionResult newResult, QuestionResult oldResult,
                                             out int newTrophies, out int oldTrophies, out int magnets)
         {
             TotalAnsweredQuestions++;
@@ -71,8 +71,6 @@ namespace Squizzy.Entities
             {
                 TotalCorrectQuestions++;
             }
-
-            oldResult = AnsweredQuestions.Find(x => x.QuestionId == newResult.QuestionId) ?? QuestionResult.FromIncorrect(question.Type, question.Id);
 
             oldTrophies = oldResult.CalculateTrophies(question);
             newTrophies = newResult.CalculateTrophies(question);
