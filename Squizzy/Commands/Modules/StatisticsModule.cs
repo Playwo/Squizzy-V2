@@ -38,7 +38,7 @@ namespace Squizzy.Commands
 
                 case StatisticsType.Category:
                     long totalAmount = 0;
-                    long totalRankedAmount = 0;
+                    long totalCorrectAmount = 0;
                     long totalPerfectAmount = 0;
                     var rankedDescription = new StringBuilder();
                     var perfectDescription = new StringBuilder();
@@ -50,19 +50,19 @@ namespace Squizzy.Commands
                         }
 
                         long categoryAmount = await Db.CountQuestionsAsync(category);
-                        int rankedAmount = player.AnsweredQuestions.Count(x => x.Category == category);
+                        int correctAmount = player.AnsweredQuestions.Count(x => x.Category == category && x.Correct);
                         int perfectAmount = player.AnsweredQuestions.Count(x => x.Category == category && x.Perfect);
-                        rankedDescription.AppendLine($"{category} : {rankedAmount} [{Math.Round((double)100*rankedAmount / categoryAmount, 1)}%]");
+                        rankedDescription.AppendLine($"{category} : {correctAmount} [{Math.Round((double)100*correctAmount / categoryAmount, 1)}%]");
                         perfectDescription.AppendLine($"{category} : {perfectAmount} [{Math.Round((double)100 * perfectAmount / categoryAmount, 1)}%]");
                         
                         totalAmount += categoryAmount;
-                        totalRankedAmount += rankedAmount;
+                        totalCorrectAmount += correctAmount;
                         totalPerfectAmount += perfectAmount;
                     }
                     await ReplyAsync(embed: new EmbedBuilder()
                         .WithColor(EmbedColor.Statistic)
                         .WithTitle($"Category Stats of {player}")
-                        .AddField($"Ranked Questions {totalRankedAmount} [{Math.Round((double)100 * totalRankedAmount / totalAmount,1)}%]",
+                        .AddField($"Correct Questions {totalCorrectAmount} [{Math.Round((double)100 * totalCorrectAmount / totalAmount,1)}%]",
                                   $"{rankedDescription}")
                         .AddField($"Perfect Questions {totalPerfectAmount} [{Math.Round((double)100 * totalPerfectAmount / totalAmount, 1)}%]",
                                   $"{perfectDescription}")
