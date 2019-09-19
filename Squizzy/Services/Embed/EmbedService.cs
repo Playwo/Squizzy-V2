@@ -65,12 +65,12 @@ namespace Squizzy.Services
                 {
                     return newResult.Perfect
                         ? builder
-                            .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
+                            .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).TotalMilliseconds} ms faster than your last best time!\n" +
                             $"This question is already perfect so you can't get any more :trophy:" +
                             "=> You get no :trophy: but you don't lose any either")
                             .Build()
                         : builder
-                            .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
+                            .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).TotalMilliseconds} ms faster than your last best time!\n" +
                             $"To earn more :trophy: you need to be even faster\n" +
                             "=> You get no :trophy: but you don't lose any either")
                             .Build();
@@ -78,7 +78,7 @@ namespace Squizzy.Services
                 if (oldResult.Time > newResult.Time && oldTrophies < newTrophies)
                 {
                     return builder
-                        .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).Milliseconds} ms faster than your last best time!\n" +
+                        .WithAppendDescription($"Your answer is {(oldResult.Time - newResult.Time).TotalMilliseconds} ms faster than your last best time!\n" +
                         $"=> You won {newTrophies - oldTrophies} :trophy:")
                         .Build();
                 }
