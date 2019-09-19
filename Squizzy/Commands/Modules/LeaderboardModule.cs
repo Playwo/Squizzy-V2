@@ -21,13 +21,13 @@ namespace Squizzy.Commands
         [Command("Leaderboard", "Lb", "Leader", "Leaders")]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         [Description("Get the player leaderboard for different statistic values")]
-        public async Task GetLeaderboardAsync([Name("Type")]LeaderboardType type)
+        public async Task GetLeaderboardAsync([Name("Type")]LeaderboardType type, [Name("Pages"), Range(1, 10)]int pagecount = 5)
         {
-            var leaders = Db.LoadLeaderboard(type.Type, 50);
+            var leaders = Db.LoadLeaderboard(type.Type, pagecount * 10);
 
-            int maximum = leaders.Count < 50
+            int maximum = leaders.Count < pagecount * 10
                 ? leaders.Count - 1
-                : 49;
+                : (pagecount * 10) - 1;
 
             var pages = new List<PageBuilder>();
 
