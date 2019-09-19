@@ -89,7 +89,7 @@ namespace Squizzy.Entities
 
             if (newResult.HasToReplace(oldResult))
             {
-                ReplaceResult(oldResult, newResult);
+                ReplaceResult(newResult);
                 Trophies += newTrophies - oldTrophies;
             }
         }
@@ -97,9 +97,9 @@ namespace Squizzy.Entities
         public QuestionResult GetQuestionResult(Category category, int questionId)
             => AnsweredQuestions.Where(x => x.Category == category && x.QuestionId == questionId).FirstOrDefault() ?? QuestionResult.FromIncorrect(category, questionId);
 
-        private void ReplaceResult(QuestionResult oldResult, QuestionResult newResult)
+        private void ReplaceResult(QuestionResult newResult)
         {
-            AnsweredQuestions.Remove(oldResult);
+            AnsweredQuestions.RemoveAll(x => x.QuestionId == newResult.QuestionId && x.Category == newResult.Category);
             AnsweredQuestions.Add(newResult);
         }
     }
