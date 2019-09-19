@@ -20,13 +20,15 @@ namespace Squizzy.Entities
         [BsonRequired]
         public TimeSpan Time { get; private set; }
 
-        public QuestionResult(Question question, bool correct, TimeSpan time)
+        public QuestionResult(Category category, int questionId, bool correct, TimeSpan time)
         {
-            QuestionId = question.Id;
-            Category = question.Type;
+            QuestionId = questionId;
+            Category = category;
             Time = time;
             Correct = correct;
         }
+
+
 
         public bool HasToReplace(QuestionResult result)
             => Correct
@@ -35,11 +37,11 @@ namespace Squizzy.Entities
                     : true //New Result True, Old Result Wrong
                 : result.Correct;  // New Result Wrong => Save if old one was right => Trophy loss
 
-        public static QuestionResult FromIncorrect(Question question)
-            => new QuestionResult(question, false, TimeSpan.Zero);
+        public static QuestionResult FromIncorrect(Category category, int questionId)
+            => new QuestionResult(category, questionId, false, TimeSpan.Zero);
 
-        public static QuestionResult FromCorrect(Question question, TimeSpan time)
-            => new QuestionResult(question, true, time);                
+        public static QuestionResult FromCorrect(Category category, int questionId, TimeSpan time)
+            => new QuestionResult(category, questionId, true, time);                
 
         public int CalculateTrophies(Question question)
         {

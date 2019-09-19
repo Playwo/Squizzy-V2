@@ -64,8 +64,8 @@ namespace Squizzy.Minigame
                 var result = await _interactivity.SendSelectionAsync(selection, Channel, TimeSpan.FromSeconds(question.Time));
 
                 var newResult = result.Value == question.CorrectValue
-                    ? QuestionResult.FromCorrect(question, result.Elapsed)
-                    : QuestionResult.FromIncorrect(question);
+                    ? QuestionResult.FromCorrect(question.Type, question.Id, result.Elapsed)
+                    : QuestionResult.FromIncorrect(question.Type, question.Id);
 
                 MinigamePlayer.Player.ProcessAnsweredQuestion(question, newResult, out var oldResult, out int newTrophies, out int oldTrophies, out int magnets);
 

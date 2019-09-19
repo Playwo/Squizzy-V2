@@ -72,7 +72,7 @@ namespace Squizzy.Entities
                 TotalCorrectQuestions++;
             }
 
-            oldResult = AnsweredQuestions.Find(x => x.QuestionId == newResult.QuestionId) ?? QuestionResult.FromIncorrect(question);
+            oldResult = AnsweredQuestions.Find(x => x.QuestionId == newResult.QuestionId) ?? QuestionResult.FromIncorrect(question.Type, question.Id);
 
             oldTrophies = oldResult.CalculateTrophies(question);
             newTrophies = newResult.CalculateTrophies(question);
@@ -95,6 +95,9 @@ namespace Squizzy.Entities
                 Trophies += newTrophies - oldTrophies;
             }
         }
+
+        public QuestionResult GetQuestionResult(Category category, int questionId)
+            => AnsweredQuestions.Where(x => x.Category == category && x.QuestionId == questionId).FirstOrDefault() ?? QuestionResult.FromIncorrect(category, questionId);
 
         private void ReplaceResult(QuestionResult oldResult, QuestionResult newResult)
         {
