@@ -22,8 +22,6 @@ namespace Squizzy.Services
         public IMongoCollection<Question> ScrapClicker1_Collection { get; private set; }
         public IMongoCollection<Question> General_Collection { get; private set; }
 
-        //public IMongoCollection<GlobalVal> GlobalsCollection { get; private set; }
-
         public override Task InitializeAsync()
         {
             Client = new MongoClient(_config["db:connection"]);
@@ -34,7 +32,6 @@ namespace Squizzy.Services
             ScrapClicker2_Collection = Database.GetCollection<Question>("ScrapClicker2-Questions");
             ScrapClicker1_Collection = Database.GetCollection<Question>("ScrapClicker1-Questions");
             General_Collection = Database.GetCollection<Question>("General-Questions");
-            //GlobalsCollection = Database.GetCollection<GlobalVal>("Settings");
 
             return base.InitializeAsync();
         }
