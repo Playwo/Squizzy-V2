@@ -11,7 +11,7 @@ namespace Squizzy.Commands
     {
         public DbBackEndService DbBackend { get; set; }
 
-        [Command("Invite", "Inv", "InviteLink", "Links", "Link")]
+        [Command("Invite", "Inv", "InviteLink", "Links", "Link", "Info", "Information")]
         [Description("Get the bots invite link")]
         public async Task SendInviteAsync()
         {
@@ -22,6 +22,7 @@ namespace Squizzy.Commands
                 .AddField("Officical Scrap Discord", "https://discord.gg/W3d9Jvx")
                 .AddField("Official Scrap Wiki", "https://official-scrap-2.fandom.com/wiki/")
                 .AddField("Suggestions / Bug-Reports", "https://discord.gg/YzEuqpk")
+                .AddField("Planned / Upcoming updates", "https://trello.com/b/HOuKowBF/squizzy")
                 .Build();
 
             await ReplyAsync(embed: embed);
