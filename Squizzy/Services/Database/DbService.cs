@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Squizzy.Commands;
 using Squizzy.Entities;
 
@@ -49,6 +50,9 @@ namespace Squizzy.Services
 
             return tempQuestionStore;
         }
+
+        public Task<Question> LoadRandomQuestionAsync(Category type) 
+            => _dbBackEnd.GetCategoryCollection(type).AsQueryable().Sample(1).FirstOrDefaultAsync();
 
         public async Task<Question> LoadNextQuestionAsync(SquizzyPlayer player, Category type)
         {
@@ -115,6 +119,17 @@ namespace Squizzy.Services
         {
             var options = new UpdateOptions() { IsUpsert = true }; //Create If non existing
             await _dbBackEnd.PlayerCollection.ReplaceOneAsync(x => x.Id == player.Id, player, options); //Replace Document
+        }
+
+        public Task SavePlayersAsync(params SquizzyPlayer[] players)
+            => SavePlayersAsync(players.AsEnumerable());
+
+        public async Task SavePlayersAsync(IEnumerable<SquizzyPlayer> players)
+        {
+            foreach (var player in players)
+            {
+                await SavePlayerAsync(player);
+            }
         }
         #endregion
         #region Count

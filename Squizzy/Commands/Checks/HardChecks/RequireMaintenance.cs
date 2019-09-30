@@ -20,9 +20,9 @@ namespace Squizzy.Commands
 
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
         {
-            var ressourceAdministration = context.ServiceProvider.GetService<RessourceAdministrationService>();
+            var maintenance = context.ServiceProvider.GetService<MaintenanceService>();
 
-            return ressourceAdministration.IsMaintenanceEnabled() == NeedsMaintenance
+            return maintenance.IsMaintenanceEnabled() == NeedsMaintenance
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful(NeedsMaintenance 
                     ? "This command can only be run while the bot is in maintenance mode!"

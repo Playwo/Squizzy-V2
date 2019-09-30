@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -18,7 +19,8 @@ namespace Squizzy.Services
         [Inject] private readonly LoggerService _logger;
         [Inject] private readonly IServiceProvider _provider;
         [Inject] private readonly EmbedService _embed;
-        [Inject] private readonly RessourceAdministrationService _ressourceAdministration;
+        [Inject] private readonly BlockingService _ressourceAdministration;
+        [Inject] private readonly MaintenanceService _maintenance;
 #pragma warning restore
 
         public override Task InitializeAsync()
@@ -48,7 +50,7 @@ namespace Squizzy.Services
                               return;
                           }
 
-                          if (_ressourceAdministration.IsMaintenanceEnabled() && !RequireHelper.IsHelper(message.Author, _provider))
+                          if (_maintenance.IsMaintenanceEnabled() && !RequireHelper.IsHelper(message.Author, _provider))
                           {
                               await message.Channel.SendMessageAsync(embed: _embed.GetDisabledDueToMaintenanceEmbed());
                               return;
@@ -67,13 +69,12 @@ namespace Squizzy.Services
                           }
                           var response = _embed.GetFailedResultEmbed(failedResult);
                           await msg.Channel.SendMessageAsync(embed: response);
-                          _ressourceAdministration.UnOccupieContext(context);
+                          _ressourceAdministration.UnblockCommandId(context.CommandId);
                       }
                   }
                   catch(Exception ex)
                   {
                       await _logger.ReportErrorAsync(msg, ex);
-                      await msg.Channel.SendMessageAsync(embed: _embed.GetSorryEmbed());
                   }
               });
             return Task.CompletedTask;
@@ -82,15 +83,14 @@ namespace Squizzy.Services
         private async Task CommandExecutedAsync(CommandExecutedEventArgs args)
         {
             var ctx = args.Context as SquizzyContext;
-            if (!_ressourceAdministration.IsMaintenanceEnabled())
+            if (!_maintenance.IsMaintenanceEnabled() && !ctx.Command.Attributes.Any(x => x.GetType() != typeof(NoSaveAttribute))) 
             {
                 await _db.SavePlayerAsync(ctx.Player);
             }
 
             var message = new LogMessage(LogSeverity.Info, "CommandHandler", $"Executed {ctx.Command.Name} in {ctx.Channel.Name} for {ctx.User.Username}");
             await _logger.LogAsync(message);
-
-            _ressourceAdministration.UnOccupieContext(ctx);
+            _ressourceAdministration.UnblockCommandId(ctx.CommandId);
         }
 
         private async Task CommandExecutionFailedAsync(CommandExecutionFailedEventArgs args)
@@ -105,7 +105,7 @@ namespace Squizzy.Services
             var message = new LogMessage(LogSeverity.Warning, "CommandHandler", $"Command {ctx.Command.Name} Execution failed in {ctx.Channel.Name} for {ctx.User.Username}", args.Result.Exception);
             await _logger.LogAsync(message);
 
-            _ressourceAdministration.UnOccupieContext(ctx);
+            _ressourceAdministration.UnblockCommandId(ctx.CommandId);
         }
     }
 }

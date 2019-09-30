@@ -10,6 +10,13 @@ namespace Squizzy.Services
 {
     public class EmbedService : SquizzyService
     {
+        public Embed MakeMultiplayerGameWinEmbed(SocketUser winner, string gameName, int honorReward) 
+            => new EmbedBuilder()
+                .WithColor(EmbedColor.Success)
+                .WithTitle($"Congratulations, {winner} :confetti_ball: :clap: ")
+                .WithDescription($"You won the {gameName} game.\nYou won {honorReward} :gem: for your efforts.\nKeep it up :muscle:")
+                .Build();
+
         public Embed MakeQuestionResultEmbed(QuestionResult oldResult, QuestionResult newResult,
                                              int oldTrophies,          int newTrophies, int magnets)
         {

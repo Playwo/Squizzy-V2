@@ -26,7 +26,7 @@ namespace Squizzy.Commands
                         .WithColor(EmbedColor.Statistic)
                         .WithTitle($"General Stats of {player}")
                         .AddField($"**{player.Trophies} :trophy:  &  {player.Magnets} <:magnet:440898600738750465>**",
-                                  $"__**Questions**__\n" +
+                                  $"__**Singleplayer**__\n" +
                                   $"Total Answered: {player.TotalAnsweredQuestions}\n" +
                                   $"Total Correct: {player.TotalCorrectQuestions}\n" +
                                   $"Success Rate: {player.SuccessRate}%\n" +

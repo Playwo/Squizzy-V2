@@ -12,7 +12,7 @@ namespace Squizzy.Commands
     {
         public DbService Db { get; set; }
         public InteractivityService Interactivity { get; set; }
-        public RessourceAdministrationService RessourceAdministration { get; set; }
+        public MaintenanceService Maintenance { get; set; }
 
         [Command("Recalculate", "Recalc")]
         [Description("Recalculate all Trophies (After DB Change)")]
@@ -61,7 +61,7 @@ namespace Squizzy.Commands
             {
                 var msg = await ReplyAsync("Waiting for all commands to end...");
 
-                await RessourceAdministration.EnableMaintenanceAsync();
+                await Maintenance.EnableMaintenanceAsync();
 
                 var embed = new EmbedBuilder()
                     .WithColor(EmbedColor.Success)
@@ -83,7 +83,7 @@ namespace Squizzy.Commands
         [RequireHelper]
         public async Task DisableMaintenanceAsync()
         {
-            await RessourceAdministration.DisableMaintenanceAsync();
+            await Maintenance.DisableMaintenanceAsync();
 
             var embed = new EmbedBuilder()
                 .WithColor(EmbedColor.Success)

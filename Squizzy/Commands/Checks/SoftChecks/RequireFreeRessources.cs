@@ -9,7 +9,6 @@ namespace Squizzy.Commands
     public class RequireFreeRessources : SoftCheckAttribute
     {
         public RessourceType Type { get; }
-
         public override string Description => $"The {Type} needs to be free from use";
 
         public RequireFreeRessources(RessourceType type)
@@ -19,50 +18,43 @@ namespace Squizzy.Commands
 
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
         {
-            var ressourceAdministration = context.ServiceProvider.GetService<RessourceAdministrationService>();
+            var blocking = context.ServiceProvider.GetService<BlockingService>();
 
-            if (Type.HasFlag(RessourceType.Guild))
+
+            if (!Type.HasFlag(RessourceType.User) || !blocking.IsUserBlocked(context.User.Id))
             {
-                if (!ressourceAdministration.IsGuildOccupied(context.Guild))
-                {
-                    ressourceAdministration.OccupieGuild(context.Guild);
-                }
-                else
-                {
-                    return CheckResult.Unsuccessful("This guild is currently occupied!");
-                }
+                blocking.BlockUser(context.CommandId, context.User.Id);
+            }
+            else
+            {
+                return CheckResult.Unsuccessful("You can only run one command at a time!");
             }
 
-            if (Type.HasFlag(RessourceType.Channel)) 
+            if (!Type.HasFlag(RessourceType.Channel) || !blocking.IsChannelBlocked(context.Channel.Id))
             {
-                if (!ressourceAdministration.IsChannelOccupied(context.Channel as SocketChannel))
-                {
-                    ressourceAdministration.OccupieChannel(context.Channel as SocketChannel);
-                }
-                else
-                {
-                    return CheckResult.Unsuccessful("Somebody else is using this channel at the moment!");
-                }
+                blocking.BlockChannel(context.CommandId, context.Channel.Id);
+            }
+            else
+            {
+                return CheckResult.Unsuccessful("Somebody else is using this channel at the moment!");
             }
 
-            if (Type.HasFlag(RessourceType.User))
+            if (!Type.HasFlag(RessourceType.Guild) || !blocking.IsGuildBlocked(context.Guild.Id))
             {
-                if (!ressourceAdministration.IsUserOccupied(context.User))
-                {
-                    ressourceAdministration.OccupieUser(context.User);
-                }
-                else
-                {
-                    return CheckResult.Unsuccessful("You can only run one command at once!");
-                }
-                
+                blocking.BlockGuild(context.CommandId, context.Guild.Id);
+            }
+            else
+            {
+                return CheckResult.Unsuccessful("This guild is currently occupied!");
             }
 
-            if (Type.HasFlag(RessourceType.Global))
+            if (!Type.HasFlag(RessourceType.Global) || !blocking.IsGlobalBlocked())
             {
-                if (ressourceAdministration.IsBlockedGlobally) {
-                    return CheckResult.Unsuccessful("This command can only run once at a time");
-                }
+                blocking.BlockGlobal(context.CommandId);
+            }
+            else
+            {
+                return CheckResult.Unsuccessful("This command can only run once at a time");
             }
 
             return CheckResult.Successful;

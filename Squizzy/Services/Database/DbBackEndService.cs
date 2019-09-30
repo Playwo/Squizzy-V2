@@ -11,6 +11,7 @@ namespace Squizzy.Services
     {
 #pragma warning disable
         [Inject] private readonly IConfigurationRoot _config;
+        [Inject] private readonly RandomizerService _random;
 #pragma warning restore
 
         private MongoClient Client { get; set; }
@@ -53,6 +54,7 @@ namespace Squizzy.Services
             Category.ScrapClicker1 => ScrapClicker1_Collection,
             Category.ScrapClicker2 => ScrapClicker2_Collection,
             Category.ScrapTD => ScrapTD_Collection,
+            Category.Random => GetCategoryCollection(_random.GetRandomCategory()),
             _ => null,
         };
     }
