@@ -34,11 +34,11 @@ namespace Squizzy.Entities
         [BsonRequired]
         public CooldownManager Cooldown { get; set; } = new CooldownManager();
 
-        [BsonRequired]
+        [BsonElement]
         public int MatchesWon { get; set; } = 0;
 
-        [BsonRequired]
-        public int MatchesPlayed { get; set; } = 0;
+        [BsonElement]
+        public int MatchesPlayed { get; set; }
 
         [BsonIgnore]
         public string Name { get; set; }
