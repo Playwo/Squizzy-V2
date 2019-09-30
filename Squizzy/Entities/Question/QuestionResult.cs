@@ -45,7 +45,7 @@ namespace Squizzy.Entities
 
         public int CalculateTrophies(Question question)
         {
-            double perfectTime = 2.4d;
+            double perfectTime = 2.0d;
             Perfect = false;
 
             if (!Correct)
