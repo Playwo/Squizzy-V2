@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using InteractivityAddon;
 using InteractivityAddon.Confirmation;
 using Qmmands;
@@ -91,6 +93,46 @@ namespace Squizzy.Commands
                 .Build();
 
             await ReplyAsync(embed: embed);
+        }
+
+        [Command("report", "feedback")]
+        [Description("Sends feedback to the developer")]
+        [RequireFinishedCooldown]
+        public async Task ReportAsync(string message)
+        {
+            var reportChannel = Context.Client.GetChannel(542974358398828544) as ISocketMessageChannel;
+
+            var content = new PageBuilder()
+                .WithColor(EmbedColor.Question)
+                .WithTitle("Send report to the Developer?")
+                .WithDescription("Please dont use this feature to spam!");
+
+            var request = new ConfirmationBuilder()
+                .WithContent(content)
+                .WithUsers(Context.User)
+                .WithDeletion(DeletionOption.AfterCapturedContext | DeletionOption.Invalids)
+                .WithCancelledEmbed(new EmbedBuilder()
+                    .WithColor(EmbedColor.Failed)
+                    .WithTitle("Report cancelled!")
+                    .WithDescription(message))
+                .Build();
+
+            var result = await Interactivity.GetUserConfirmationAsync(request, Context.Channel);
+
+            if (result.Value)
+            {
+                await reportChannel.SendMessageAsync(embed: new EmbedBuilder()
+                    .WithTitle($"Report by {Context.User.Username}")
+                    .WithDescription(message)
+                    .Build());
+                await ReplyAsync(embed: new EmbedBuilder()
+                    .WithColor(EmbedColor.Success)
+                    .WithTitle("Your report has been transmitted! :white_check_mark:")
+                    .WithDescription(message)
+                    .Build());
+
+                Context.Player.Cooldown.SetCommandCooldown(Context.Command, TimeSpan.FromMinutes(5));
+            }
         }
     }
 }
