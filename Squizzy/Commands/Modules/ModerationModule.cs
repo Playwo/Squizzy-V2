@@ -98,7 +98,7 @@ namespace Squizzy.Commands
         [Command("report", "feedback")]
         [Description("Sends feedback to the developer")]
         [RequireFinishedCooldown]
-        public async Task ReportAsync(string message)
+        public async Task ReportAsync([Remainder]string message)
         {
             var reportChannel = Context.Client.GetChannel(542974358398828544) as ISocketMessageChannel;
 
