@@ -46,7 +46,7 @@ namespace Squizzy.Games
             var question = await _db.LoadNextQuestionAsync(Player.Player, QuestionType);
             var lastResult = Player.Player.GetQuestionResult(question.Type, question.Id);
 
-            var selectionEmbed = question.ToEmbedBuilder(Player.User, tick, Ticks);
+            var selectionEmbed = question.ToEmbedBuilder(Player.User, tick + 1, Ticks);
 
             if (lastResult.Correct)
             {
