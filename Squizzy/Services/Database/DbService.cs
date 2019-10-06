@@ -59,7 +59,7 @@ namespace Squizzy.Services
             var remainingQuestions = await LoadQuestionsAsync(type);
             remainingQuestions = remainingQuestions
                 .OrderByDescending(y => player.AnsweredQuestions.Find(z => z.Correct && z.QuestionId == y.Id && z.Category == y.Type)?.Time ?? TimeSpan.MaxValue).ToList();
-            return remainingQuestions.ElementAt(_random.RandomInt(0, 5)); //Return one of the 6 slowest questions
+            return remainingQuestions.ElementAt(_random.RandomInt(0, 10)); //Return one of the 11 slowest questions
         }
 
         public async Task<SquizzyContext> LoadContextAsync(SocketUserMessage message)
