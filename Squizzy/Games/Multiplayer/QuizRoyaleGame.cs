@@ -91,7 +91,7 @@ namespace Squizzy.Games
             await Task.Delay(1000);
             await Channel.SendMessageAsync(embed: new EmbedBuilder()
                 .WithColor(EmbedColor.Multiplayer)
-                .WithTitle($"The Round has ended! [Round {tick + 1}/{Ticks}]")
+                .WithTitle($"The Round has ended! [Round {tick}/{Ticks}]")
                 .WithDescription($"**Results:**\n{description}")
                 .Build());
 

@@ -22,7 +22,7 @@ namespace Squizzy.Games
 
         public async Task ExecuteAsync()
         {
-            for (int tick = 0; tick < Ticks; tick++)
+            for (int tick = 1; tick <= Ticks; tick++)
             {
                 var tickTask = TickAsync(tick);
                 var exitTask = ExitSource.Task;
