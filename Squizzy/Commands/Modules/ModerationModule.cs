@@ -4,6 +4,7 @@ using Discord;
 using Discord.WebSocket;
 using InteractivityAddon;
 using InteractivityAddon.Confirmation;
+using Microsoft.Extensions.Configuration;
 using Qmmands;
 using Squizzy.Services;
 
@@ -15,6 +16,8 @@ namespace Squizzy.Commands
         public DbService Db { get; set; }
         public InteractivityService Interactivity { get; set; }
         public MaintenanceService Maintenance { get; set; }
+        public IConfigurationRoot Config { get; set; }
+
 
         [Command("Recalculate", "Recalc")]
         [Description("Recalculate all Trophies (After DB Change)")]
@@ -100,7 +103,7 @@ namespace Squizzy.Commands
         [RequireFinishedCooldown]
         public async Task ReportAsync([Remainder]string message)
         {
-            var reportChannel = Context.Client.GetChannel(542974358398828544) as ISocketMessageChannel;
+            var reportChannel = Context.Client.GetChannel(ulong.Parse(Config["feedbackChannel"])) as ISocketMessageChannel;
 
             var content = new PageBuilder()
                 .WithColor(EmbedColor.Question)
