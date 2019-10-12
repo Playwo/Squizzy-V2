@@ -36,8 +36,8 @@ namespace Squizzy.Extensions
         {
             var builder = new StringBuilder()
                 .Append($"{command.Name}");
-            
-            foreach(var parameter in command.Parameters)
+
+            foreach (var parameter in command.Parameters)
             {
                 builder.Append($" [{parameter.Name}]");
             }
@@ -71,7 +71,7 @@ namespace Squizzy.Extensions
                 builder.AddField("Checks", checkBuilder);
             }
 
-            return builder .Build();
+            return builder.Build();
         }
     }
 }

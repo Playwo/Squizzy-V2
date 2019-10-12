@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -111,7 +110,7 @@ namespace Squizzy
             await Task.Delay(-1);
         }
 
-        private Task Client_GuildAvailableAsync(SocketGuild guild) 
+        private Task Client_GuildAvailableAsync(SocketGuild guild)
             => Logger.LogAsync(new LogMessage(LogSeverity.Verbose, "Gateway", $"Connected to {guild.Name} [{guild.Owner}]"));
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Discord;
 using Squizzy.Extensions;
 using Squizzy.Services;
-using System.Linq;
-using System.Timers;
 
 namespace Squizzy.Games
 {
@@ -169,7 +169,7 @@ namespace Squizzy.Games
             {
                 _blocking.UnblockCommandId(Id);
 
-                if(dispose)
+                if (dispose)
                 {
                     Dispose();
                 }

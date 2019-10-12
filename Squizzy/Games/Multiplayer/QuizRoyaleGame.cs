@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using InteractivityAddon;
-using Squizzy.Services;
-using Squizzy.Extensions;
 using InteractivityAddon.Selection;
 using Squizzy.Entities;
-using System.Text;
+using Squizzy.Extensions;
+using Squizzy.Services;
 
 namespace Squizzy.Games
 {

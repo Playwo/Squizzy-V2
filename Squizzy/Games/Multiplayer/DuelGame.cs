@@ -59,7 +59,7 @@ namespace Squizzy.Games
                 var question = await _db.LoadRandomQuestionAsync(Category);
                 var selectionEmbed = question.ToEmbedBuilder(player.User, 1, 1);
 
-             
+
                 var selection = new MessageSelectionBuilder<string>()
                     .WithSelectionEmbed(selectionEmbed)
                     .WithValues(question.Options.Shuffle(_random.Generator).ToList())
@@ -109,7 +109,7 @@ namespace Squizzy.Games
                 totalRankingDescription.AppendLine($"#{i} {player.User}: {wins} rounds won");
             }
 
-            
+
             await Task.Delay(1000);
             await Channel.SendMessageAsync(embed: new EmbedBuilder()
                 .WithColor(EmbedColor.Multiplayer)

@@ -72,7 +72,7 @@ namespace Squizzy.Services
                           _ressourceAdministration.UnblockCommandId(context.CommandId);
                       }
                   }
-                  catch(Exception ex)
+                  catch (Exception ex)
                   {
                       await _logger.ReportErrorAsync(msg, ex);
                   }
@@ -83,7 +83,7 @@ namespace Squizzy.Services
         private async Task CommandExecutedAsync(CommandExecutedEventArgs args)
         {
             var ctx = args.Context as SquizzyContext;
-            if (!_maintenance.IsMaintenanceEnabled() && ctx.Command.Attributes.Any(x => x.GetType() == typeof(SaveAttribute))) 
+            if (!_maintenance.IsMaintenanceEnabled() && ctx.Command.Attributes.Any(x => x.GetType() == typeof(SaveAttribute)))
             {
                 await _db.SavePlayerAsync(ctx.Player);
             }

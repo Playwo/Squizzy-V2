@@ -12,7 +12,9 @@ namespace Squizzy.Commands
         public GuildPermission? GuildPerms { get; }
         public ChannelPermission? ChannelPerms { get; }
 
-        public override string Description { get {
+        public override string Description
+        {
+            get {
 
                 var builder = new StringBuilder();
 
@@ -31,18 +33,19 @@ namespace Squizzy.Commands
                 }
 
                 return $"I need the {builder} permission(s)";
-        } }
+            }
+        }
 
         public RequireBotPermissionAttribute(GuildPermission permission)
         {
             GuildPerms = permission;
-            ChannelPerms= null;
+            ChannelPerms = null;
         }
 
         public RequireBotPermissionAttribute(ChannelPermission permission)
         {
-            ChannelPerms= permission;
-            GuildPerms= null;
+            ChannelPerms = permission;
+            GuildPerms = null;
         }
 
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)

@@ -24,7 +24,7 @@ namespace Squizzy.Commands
 
             return maintenance.IsMaintenanceEnabled() == NeedsMaintenance
                 ? CheckResult.Successful
-                : CheckResult.Unsuccessful(NeedsMaintenance 
+                : CheckResult.Unsuccessful(NeedsMaintenance
                     ? "This command can only be run while the bot is in maintenance mode!"
                     : "This command cannot be run while the bot is in maintenance mode!");
         }

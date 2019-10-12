@@ -51,18 +51,18 @@ namespace Squizzy.Services
             }
         }
 
-        public IMongoCollection<Question> GetCategoryCollection(Category type) 
+        public IMongoCollection<Question> GetCategoryCollection(Category type)
             => type switch
-        {
-            Category.General => General_Collection,
-            Category.ScrapClicker1 => ScrapClicker1_Collection,
-            Category.ScrapClicker2 => ScrapClicker2_Collection,
-            Category.ScrapTD => ScrapTD_Collection,
-            Category.Random => GetCategoryCollection(_random.GetRandomCategory()),
-            _ => null,
-        };
+            {
+                Category.General => General_Collection,
+                Category.ScrapClicker1 => ScrapClicker1_Collection,
+                Category.ScrapClicker2 => ScrapClicker2_Collection,
+                Category.ScrapTD => ScrapTD_Collection,
+                Category.Random => GetCategoryCollection(_random.GetRandomCategory()),
+                _ => null,
+            };
 
-        public void RegisterClassMaps() 
+        public void RegisterClassMaps()
             => BsonClassMap.RegisterClassMap<SquizzyPlayer>(cm =>
                 {
                     cm.AutoMap();

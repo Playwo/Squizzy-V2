@@ -10,7 +10,7 @@ namespace Squizzy.Services
 {
     public class EmbedService : SquizzyService
     {
-        public Embed MakeMultiplayerGameWinEmbed(SocketUser winner, string gameName, int honorReward) 
+        public Embed MakeMultiplayerGameWinEmbed(SocketUser winner, string gameName, int honorReward)
             => new EmbedBuilder()
                 .WithColor(EmbedColor.Success)
                 .WithTitle($"Congratulations, {winner} :confetti_ball: :clap: ")
@@ -18,7 +18,7 @@ namespace Squizzy.Services
                 .Build();
 
         public Embed MakeQuestionResultEmbed(QuestionResult oldResult, QuestionResult newResult,
-                                             int oldTrophies,          int newTrophies, int magnets)
+                                             int oldTrophies, int newTrophies, int magnets)
         {
             var builder = new EmbedBuilder
             {
@@ -30,7 +30,7 @@ namespace Squizzy.Services
                         ? $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n" +
                           $"That means this question is now perfect. :crown:\n"
                         : $"You answered in {Math.Round(newResult.Time.TotalSeconds, 3)} seconds.\n"
-                    : "You provided the wrong answer or cancelled! :x:\n")  +
+                    : "You provided the wrong answer or cancelled! :x:\n") +
                     (magnets > 0
                         ? $"=> You received {magnets} <:magnet:440898600738750465>\n"
                         : $"=> You lost {-magnets} <:magnet:440898600738750465>\n"),
@@ -125,7 +125,7 @@ namespace Squizzy.Services
                 case TypeParseFailedResult parseResult:
                     description.AppendLine("__**The following parameter couldn't be parsed**__");
                     description.AppendLine($"`[{parseResult.Parameter.Name}] - {parseResult.Reason}`");
-                        break;
+                    break;
             }
 
             return new EmbedBuilder()

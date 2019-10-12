@@ -13,7 +13,7 @@ namespace Squizzy.Commands
     {
         public override string Description => $"This command can only be executed by helpers";
 
-        public override ValueTask<CheckResult> CheckAsync(SquizzyContext context) 
+        public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
             => IsHelper(context.User, context.ServiceProvider)
                 ? CheckResult.Successful
                 : CheckResult.Unsuccessful("This command is restricted to helpers!");

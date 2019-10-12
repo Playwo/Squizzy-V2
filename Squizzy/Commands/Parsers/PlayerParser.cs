@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Qmmands;
-using Squizzy.Extensions;
 using Squizzy.Entities;
+using Squizzy.Extensions;
 using Squizzy.Services;
 
 namespace Squizzy.Commands

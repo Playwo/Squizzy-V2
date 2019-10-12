@@ -22,7 +22,7 @@ namespace Squizzy.Games
         public Category QuestionType { get; }
 
         public QuizGame(IMessageChannel channel, MinigamePlayer player, Category type, int questionCount)
-            :base(questionCount)
+            : base(questionCount)
         {
             player.Parent = this;
 

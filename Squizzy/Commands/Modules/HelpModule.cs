@@ -13,10 +13,10 @@ namespace Squizzy.Commands
     {
         public CommandService Command { get; set; }
 
-        [Command("CommandHelp", "CommandInfo", "CmdInfo", "Help", "CmdHelp","CInfo" ,"CHelp", "HelpMe", "HowDoesThisWork")]
+        [Command("CommandHelp", "CommandInfo", "CmdInfo", "Help", "CmdHelp", "CInfo", "CHelp", "HelpMe", "HowDoesThisWork")]
         [Description("Get help about a certain command")]
         [Priority(1)]
-        public Task SendCommandHelpAsync([Name("Command")]Command command) 
+        public Task SendCommandHelpAsync([Name("Command")]Command command)
             => ReplyAsync(embed: command.GetHelpEmbed());
 
         [Command("Help", "HelpMe", "HowDoesThisWork")]
@@ -25,7 +25,7 @@ namespace Squizzy.Commands
         {
             var helpBuilder = new EmbedBuilder();
 
-            foreach(var module in Command.GetAllModules())
+            foreach (var module in Command.GetAllModules())
             {
                 if (!await module.RunHardChecksAsync(Context))
                 {
@@ -34,7 +34,7 @@ namespace Squizzy.Commands
 
                 var runnableCommands = new List<Command>();
 
-                foreach(var command in module.Commands)
+                foreach (var command in module.Commands)
                 {
                     if (!await command.RunHardChecksAsync(Context))
                     {
@@ -50,7 +50,7 @@ namespace Squizzy.Commands
                 }
 
                 var cmdHelpBuilder = new StringBuilder();
-                foreach(var command in runnableCommands)
+                foreach (var command in runnableCommands)
                 {
                     cmdHelpBuilder.AppendLine(command.GetHelp());
                 }

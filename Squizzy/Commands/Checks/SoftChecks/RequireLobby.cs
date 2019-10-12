@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Squizzy.Extensions;
 using Qmmands;
+using Squizzy.Extensions;
 using Squizzy.Services;
 
 namespace Squizzy.Commands

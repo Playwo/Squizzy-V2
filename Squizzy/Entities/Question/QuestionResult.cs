@@ -41,7 +41,7 @@ namespace Squizzy.Entities
             => new QuestionResult(category, questionId, false, TimeSpan.Zero);
 
         public static QuestionResult FromCorrect(Category category, int questionId, TimeSpan time)
-            => new QuestionResult(category, questionId, true, time);                
+            => new QuestionResult(category, questionId, true, time);
 
         public int CalculateTrophies(Question question)
         {

@@ -19,7 +19,7 @@ namespace Squizzy.Services
         public Category GetRandomCategory(bool includeRandom = false)
         {
             var categories = ((Category[]) Enum.GetValues(typeof(Category))).ToList();
-            
+
             if (!includeRandom)
             {
                 categories.Remove(Category.Random);
@@ -27,7 +27,7 @@ namespace Squizzy.Services
 
             return categories[Generator.Next(0, categories.Count - 1)];
         }
-           
+
 
         public int RandomInt(int min, int max)
             => Generator.Next(min, max);

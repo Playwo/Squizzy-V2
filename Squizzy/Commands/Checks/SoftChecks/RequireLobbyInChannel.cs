@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Qmmands;
-using Squizzy.Services;
 using Squizzy.Extensions;
+using Squizzy.Services;
 
 namespace Squizzy.Commands
 {
-    class RequireLobbyInChannel : SquizzyCheck
+    internal class RequireLobbyInChannel : SquizzyCheck
     {
         public override string Description => "Requires a Multiplayer Lobby to be open in the current channel";
 

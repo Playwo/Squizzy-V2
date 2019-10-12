@@ -11,7 +11,7 @@ namespace Squizzy.Entities
 
         public LeaderboardType(Leaderboard type, Func<SquizzyPlayer, object> field, string title, string valueIdentifier)
         {
-            Field = x=> field.Invoke(x).ToString();
+            Field = x => field.Invoke(x).ToString();
             Title = title;
             ValueIdentifier = valueIdentifier;
             Type = type;

@@ -14,7 +14,7 @@ namespace Squizzy.Commands
         private readonly Dictionary<MultiGameType, string[]> LbTypeShortcuts = new Dictionary<MultiGameType, string[]>()
         {
             [MultiGameType.QuizRoyale] = new[] { "QuizRoyale", "Royale", "QR", "QuizR", "QRoyale" },
-            [MultiGameType.Duel] = new[] {"Duel", "DuelGame", "1v1", "Due", "Du", "D"}
+            [MultiGameType.Duel] = new[] { "Duel", "DuelGame", "1v1", "Due", "Du", "D" }
         };
 
         public override ValueTask<TypeParserResult<MultiGame>> ParseAsync(Parameter parameter, string value, SquizzyContext context)

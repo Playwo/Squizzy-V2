@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Discord;
 using Discord.WebSocket;
 using MongoDB.Bson.Serialization.Attributes;
@@ -52,7 +50,7 @@ namespace Squizzy.Entities
         }
 
         public EmbedBuilder ToEmbedBuilder(SocketUser user, int index, int total)
-            =>  new EmbedBuilder()
+            => new EmbedBuilder()
                     .WithAuthor(user)
                     .WithThumbnailUrl(PictureURL)
                     .WithColor(EmbedColor.Quiz)

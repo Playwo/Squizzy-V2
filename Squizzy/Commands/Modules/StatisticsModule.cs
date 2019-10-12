@@ -54,9 +54,9 @@ namespace Squizzy.Commands
                         long categoryAmount = await Db.CountQuestionsAsync(category);
                         int correctAmount = player.AnsweredQuestions.Count(x => x.Category == category && x.Correct);
                         int perfectAmount = player.AnsweredQuestions.Count(x => x.Category == category && x.Perfect);
-                        rankedDescription.AppendLine($"{category} : {correctAmount} [{Math.Round((double)100*correctAmount / categoryAmount, 1)}%]");
-                        perfectDescription.AppendLine($"{category} : {perfectAmount} [{Math.Round((double)100 * perfectAmount / categoryAmount, 1)}%]");
-                        
+                        rankedDescription.AppendLine($"{category} : {correctAmount} [{Math.Round((double) 100 * correctAmount / categoryAmount, 1)}%]");
+                        perfectDescription.AppendLine($"{category} : {perfectAmount} [{Math.Round((double) 100 * perfectAmount / categoryAmount, 1)}%]");
+
                         totalAmount += categoryAmount;
                         totalCorrectAmount += correctAmount;
                         totalPerfectAmount += perfectAmount;
@@ -64,9 +64,9 @@ namespace Squizzy.Commands
                     await ReplyAsync(embed: new EmbedBuilder()
                         .WithColor(EmbedColor.Statistic)
                         .WithTitle($"Category Stats of {player}")
-                        .AddField($"Correct Questions {totalCorrectAmount} [{Math.Round((double)100 * totalCorrectAmount / totalAmount,1)}%]",
+                        .AddField($"Correct Questions {totalCorrectAmount} [{Math.Round((double) 100 * totalCorrectAmount / totalAmount, 1)}%]",
                                   $"{rankedDescription}")
-                        .AddField($"Perfect Questions {totalPerfectAmount} [{Math.Round((double)100 * totalPerfectAmount / totalAmount, 1)}%]",
+                        .AddField($"Perfect Questions {totalPerfectAmount} [{Math.Round((double) 100 * totalPerfectAmount / totalAmount, 1)}%]",
                                   $"{perfectDescription}")
                         .Build());
                     break;

@@ -51,7 +51,7 @@ namespace Squizzy.Services
             return tempQuestionStore;
         }
 
-        public Task<Question> LoadRandomQuestionAsync(Category type) 
+        public Task<Question> LoadRandomQuestionAsync(Category type)
             => _dbBackEnd.GetCategoryCollection(type).AsQueryable().Sample(1).FirstOrDefaultAsync();
 
         public async Task<Question> LoadNextQuestionAsync(SquizzyPlayer player, Category type)
@@ -75,19 +75,19 @@ namespace Squizzy.Services
             return new SquizzyContext(shard, message, guildUser?.Guild, player, _provider);
         }
 
-        public async Task<IEnumerable<Question>> LoadQuestionsAsync(Category category) 
+        public async Task<IEnumerable<Question>> LoadQuestionsAsync(Category category)
             => (await _dbBackEnd.GetCategoryCollection(category).FindAsync(x => true)).ToEnumerable();
 
         #region Leaderboard
-        public List<SquizzyPlayer> LoadLeaderboard(Leaderboard type, int amount) 
+        public List<SquizzyPlayer> LoadLeaderboard(Leaderboard type, int amount)
             => type switch
-        {
-            Leaderboard.Trophies => LoadTrohiesLb(amount),
-            Leaderboard.Magnets => LoadMagnetsLb(amount),
-            Leaderboard.Honor => LoadHonorLb(amount),
-            Leaderboard.AnsweredQuestions => LoadTotalAnsweredQuestionsLb(amount),
-            _ => new List<SquizzyPlayer>(),
-        };
+            {
+                Leaderboard.Trophies => LoadTrohiesLb(amount),
+                Leaderboard.Magnets => LoadMagnetsLb(amount),
+                Leaderboard.Honor => LoadHonorLb(amount),
+                Leaderboard.AnsweredQuestions => LoadTotalAnsweredQuestionsLb(amount),
+                _ => new List<SquizzyPlayer>(),
+            };
 
         private List<SquizzyPlayer> LoadTrohiesLb(int amount)
             => _dbBackEnd.PlayerCollection.Find(x => true)
@@ -146,7 +146,7 @@ namespace Squizzy.Services
         {
             long totalCount = 0;
 
-            foreach(Category category in Enum.GetValues(typeof(Category)))
+            foreach (Category category in Enum.GetValues(typeof(Category)))
             {
                 if (category == Category.Random)
                 {
@@ -159,9 +159,9 @@ namespace Squizzy.Services
             return totalCount;
         }
 
-    #endregion
+        #endregion
 
-    public async Task RecalculateTrophiesAsync()
+        public async Task RecalculateTrophiesAsync()
         {
             var tempQuestionStore = new List<Question>();
 
@@ -170,11 +170,11 @@ namespace Squizzy.Services
             tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker2));
             tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapTD));
 
-            foreach(var player in (await _dbBackEnd.PlayerCollection.FindAsync(x => true)).ToEnumerable())
+            foreach (var player in (await _dbBackEnd.PlayerCollection.FindAsync(x => true)).ToEnumerable())
             {
                 int trophies = 0;
 
-                foreach(var questionResult in player.AnsweredQuestions)
+                foreach (var questionResult in player.AnsweredQuestions)
                 {
                     var question = tempQuestionStore.Find(x => x.Type == questionResult.Category && x.Id == questionResult.QuestionId);
                     trophies += questionResult.CalculateTrophies(question);

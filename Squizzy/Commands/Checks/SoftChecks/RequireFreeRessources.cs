@@ -1,8 +1,7 @@
-﻿using Squizzy.Extensions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Qmmands;
+using Squizzy.Extensions;
 using Squizzy.Services;
-using Discord.WebSocket;
 
 namespace Squizzy.Commands
 {

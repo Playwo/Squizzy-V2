@@ -43,7 +43,7 @@ namespace Squizzy.Services
 
         public void DeleteLobby(GameLobby lobby)
         {
-            lock(LobbyLock)
+            lock (LobbyLock)
             {
                 Lobbies.TryRemove(lobby.Channel.Id, out _);
             }
@@ -51,7 +51,7 @@ namespace Squizzy.Services
 
         public GameLobby GetLobby(SocketUser user)
         {
-            lock(LobbyLock)
+            lock (LobbyLock)
             {
                 return Lobbies.Values.Where(x => x.Players.Any(z => z.Id == user.Id)).FirstOrDefault();
             }
@@ -59,7 +59,7 @@ namespace Squizzy.Services
 
         public GameLobby GetLobby(IMessageChannel channel)
         {
-            lock(LobbyLock)
+            lock (LobbyLock)
             {
                 Lobbies.TryGetValue(channel.Id, out var lobby);
                 return lobby;

@@ -16,6 +16,6 @@ namespace Squizzy.Commands
             return command == null
                 ? TypeParserResult<Command>.Unsuccessful("Could not find a command matching your input!")
                 : TypeParserResult<Command>.Successful(command);
-        } 
+        }
     }
 }

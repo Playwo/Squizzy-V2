@@ -22,7 +22,7 @@ namespace Squizzy
                 })
                 .GetAwaiter().GetResult();
             }
-            catch(HttpException)
+            catch (HttpException)
             {
                 Console.WriteLine("Connection Failure!");
                 Console.ReadLine();

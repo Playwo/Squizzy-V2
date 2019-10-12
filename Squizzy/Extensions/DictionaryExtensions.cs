@@ -5,7 +5,7 @@ namespace Squizzy.Extensions
 {
     public static partial class Extensions
     {
-        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey,TValue> addValueFactory, Func<TKey, TValue, TValue> updateFactory)
+        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateFactory)
         {
             if (!dictionary.ContainsKey(key))
             {
@@ -18,7 +18,7 @@ namespace Squizzy.Extensions
             }
         }
 
-        public static void TryUpdate<TKey,TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue, TValue> updateFactory)
+        public static void TryUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue, TValue> updateFactory)
         {
             if (!dictionary.Remove(key, out var oldValue))
             {

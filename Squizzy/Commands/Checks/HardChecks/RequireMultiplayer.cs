@@ -14,7 +14,7 @@ namespace Squizzy.Commands
             NeedsMultiplayer = needsMultiplayer;
         }
 
-        public override ValueTask<CheckResult> CheckAsync(SquizzyContext context) 
+        public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
             => context.Player.HasMultiplayer == NeedsMultiplayer
                 ? CheckResult.Successful
                 : NeedsMultiplayer

@@ -81,7 +81,7 @@ namespace Squizzy.Services
 
         public void BlockGlobal(ulong commandId)
         {
-            lock(GlobalLock)
+            lock (GlobalLock)
             {
                 BlockedGlobal.AddOrUpdate(commandId,
                            id => null,
@@ -89,7 +89,7 @@ namespace Squizzy.Services
             }
         }
         #endregion
-    
+
         #region Unblock
         public void UnblockCommandId(ulong commandId)
         {
@@ -113,7 +113,7 @@ namespace Squizzy.Services
 
         public void UnblockUser(ulong commandId, ulong userId)
         {
-            lock(UserLock)
+            lock (UserLock)
             {
                 BlockedUsers.TryUpdate(commandId,
                     (key, list) => { list.Remove(userId); return list; });
@@ -149,7 +149,7 @@ namespace Squizzy.Services
         #region IsBlocked
         public bool IsUserBlocked(ulong userId)
         {
-            lock(UserLock)
+            lock (UserLock)
             {
                 return BlockedUsers.Values.Any(x => x.Contains(userId));
             }

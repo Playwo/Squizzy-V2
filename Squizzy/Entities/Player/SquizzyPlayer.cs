@@ -98,7 +98,7 @@ namespace Squizzy.Entities
             oldTrophies = oldResult.CalculateTrophies(question);
             newTrophies = newResult.CalculateTrophies(question);
 
-            magnets = (int)Math.Ceiling(newTrophies / 5.0);
+            magnets = (int) Math.Ceiling(newTrophies / 5.0);
             if (magnets == 0)
             {
                 magnets = -3;
