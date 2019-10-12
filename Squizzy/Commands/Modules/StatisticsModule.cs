@@ -29,10 +29,12 @@ namespace Squizzy.Commands
                                   $"__**Singleplayer**__\n" +
                                   $"Total Answered: {player.TotalAnsweredQuestions}\n" +
                                   $"Total Correct: {player.TotalCorrectQuestions}\n" +
-                                  $"Success Rate: {player.SuccessRate}%\n" +
+                                  $"Success Rate: {player.SingleplayerSuccessRate}%\n" +
                                   $"Average Answer Time {player.AverageAnswerTime} seconds")
                         .AddField($"{player.Honor} :gem:",
-                                  $"Soon...")
+                                  $"Games Played: {player.MatchesPlayed}\n" +
+                                  $"Games Won: {player.MatchesWon}" +
+                                  $"Success Rate: {player.MultiplayerSuccessRate}%")
                         .Build());
                     break;
 

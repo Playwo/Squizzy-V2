@@ -55,8 +55,13 @@ namespace Squizzy.Entities
             : 0;
 
         [BsonIgnore]
-        public double SuccessRate => TotalAnsweredQuestions > 0
+        public double SingleplayerSuccessRate => TotalAnsweredQuestions > 0
             ? Math.Round(100d * (TotalCorrectQuestions / (double) TotalAnsweredQuestions), 2)
+            : 0;
+
+        [BsonIgnore]
+        public double MultiplayerSuccessRate => MatchesPlayed > 0
+            ? Math.Round(100d * (MatchesWon / (double) MatchesPlayed), 2)
             : 0;
 
         public SquizzyPlayer(ulong id)
