@@ -31,6 +31,7 @@ namespace Squizzy.Commands
         [RequireFreeRessources(RessourceType.Channel | RessourceType.User)]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         [RequireMaintenance(false)]
+        [RequireMultiplayer(true)]
         public Task OpenLobbyAsync()
         {
             var creator = new MinigamePlayer(Context.Player, Context.User);
@@ -41,6 +42,7 @@ namespace Squizzy.Commands
         [Description("Sets the game of your current Multiplayer Lobby")]
         [RequireLobby(true, needsLeader: true)]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
+        [RequireMultiplayer(true)]
         public Task ChangeLobbyGameAsync(MultiGame game)
         {
             var lobby = Minigame.GetLobby(Context.User);
@@ -50,8 +52,9 @@ namespace Squizzy.Commands
         [Command("StartLobby", "Start", "RunLobby", "PlayLobby")]
         [Description("Start the game in your Multiplayer Lobby")]
         [RequireLobby(true, needsLeader: true)]
-        [NoSave]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
+        [RequireMultiplayer(true)]
+        [NoSave]
         public Task StartLobbyAsync()
         {
             var lobby = Minigame.GetLobby(Context.User);
@@ -64,6 +67,7 @@ namespace Squizzy.Commands
         [RequireLobby(false)]
         [RequireFreeRessources(RessourceType.User)]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
+        [RequireMultiplayer(true)]
         public Task JoinLobbyAsync()
         {
             var lobby = Minigame.GetLobby(Context.Channel);
@@ -74,6 +78,7 @@ namespace Squizzy.Commands
         [Command("CloseLobby", "ExitLobby", "CancelLobby")]
         [Description("Closes your Multiplayer Lobby")]
         [RequireLobby(true, needsLeader: true)]
+        [RequireMultiplayer(true)]
         public Task CloseLobbyAsync()
         {
             var lobby = Minigame.GetLobby(Context.User);
