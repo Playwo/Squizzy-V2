@@ -98,7 +98,7 @@ namespace Squizzy.Commands
             await ReplyAsync(embed: embed);
         }
 
-        [Command("report", "feedback")]
+        [Command("Report", "Feedback", "BugReport", "SendFeedback", "GiveFeedback")]
         [Description("Sends feedback to the developer")]
         [RequireFinishedCooldown]
         public async Task ReportAsync([Remainder]string message)
