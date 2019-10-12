@@ -13,25 +13,25 @@ namespace Squizzy.Entities
         [BsonId]
         public int Id { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public string Text { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public Category Type { get; set; }
 
-        [BsonRequired]
+        [BsonElement]
         public List<string> Options { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public int CorrectOption { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public int Reward { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public int Time { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public string PictureURL { get; private set; }
 
         [BsonIgnore]

@@ -10,28 +10,28 @@ namespace Squizzy.Entities
         [BsonId]
         public ulong Id { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public int Trophies { get; set; } = 0;
 
-        [BsonRequired]
+        [BsonElement]
         public int Magnets { get; set; } = 0;
 
-        [BsonRequired]
+        [BsonElement]
         public int Honor { get; set; } = 0;
 
-        [BsonRequired]
+        [BsonElement]
         public List<QuestionResult> AnsweredQuestions { get; set; } = new List<QuestionResult>();
 
-        [BsonRequired]
+        [BsonElement]
         public int TotalAnsweredQuestions { get; set; } = 0;
 
-        [BsonRequired]
+        [BsonElement]
         public int TotalCorrectQuestions { get; set; } = 0;
 
-        [BsonRequired]
+        [BsonElement]
         public bool HasMultiplayer { get; set; } = false;
 
-        [BsonRequired]
+        [BsonElement]
         public CooldownManager Cooldown { get; set; } = new CooldownManager();
 
         [BsonElement]

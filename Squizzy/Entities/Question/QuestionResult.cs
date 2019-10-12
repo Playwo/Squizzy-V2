@@ -5,19 +5,19 @@ namespace Squizzy.Entities
 {
     public class QuestionResult
     {
-        [BsonRequired]
+        [BsonElement]
         public int QuestionId { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public Category Category { get; private set; }
 
-        //[BsonRequired]
+        //[BsonElement]
         public bool Correct { get; private set; }
 
-        //[BsonRequired]
+        //[BsonElement]
         public bool Perfect { get; private set; }
 
-        [BsonRequired]
+        [BsonElement]
         public TimeSpan Time { get; private set; }
 
         public QuestionResult(Category category, int questionId, bool correct, TimeSpan time)
