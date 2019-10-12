@@ -27,6 +27,8 @@ namespace Squizzy.Services
 
         public override Task InitializeAsync()
         {
+            RegisterClassMaps();
+
             Client = new MongoClient(_config["db:connection"]);
             Database = Client.GetDatabase(_config["db:name"]);
 
@@ -35,8 +37,6 @@ namespace Squizzy.Services
             ScrapClicker2_Collection = Database.GetCollection<Question>("ScrapClicker2-Questions");
             ScrapClicker1_Collection = Database.GetCollection<Question>("ScrapClicker1-Questions");
             General_Collection = Database.GetCollection<Question>("General-Questions");
-
-            RegisterClassMaps();
 
             return base.InitializeAsync();
         }

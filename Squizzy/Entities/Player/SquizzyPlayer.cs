@@ -38,10 +38,10 @@ namespace Squizzy.Entities
         public bool HasMultiplayer { get; set; } = false;
 
         [BsonElement] //Default value provided through DbBackEndService#RegisterClassMaps
-        public Dictionary<int, int> Upgrades = new Dictionary<int, int>();
+        public Dictionary<int, int> Upgrades { get; private set; } = new Dictionary<int, int>();
 
         [BsonElement] //Default value provided through DbBackEndService#RegisterClassMaps
-        public CooldownManager Cooldown { get; set; } = new CooldownManager();
+        public CooldownManager Cooldown { get; private set; } = new CooldownManager();
 
         [BsonElement]
         [BsonDefaultValue(0)]

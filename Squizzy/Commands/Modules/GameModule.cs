@@ -54,7 +54,6 @@ namespace Squizzy.Commands
         [RequireLobby(true, needsLeader: true)]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         [RequireMultiplayer(true)]
-        [NoSave]
         public Task StartLobbyAsync()
         {
             var lobby = Minigame.GetLobby(Context.User);

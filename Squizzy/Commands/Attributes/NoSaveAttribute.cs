@@ -2,7 +2,7 @@
 
 namespace Squizzy.Commands
 {
-    public sealed class NoSaveAttribute : Attribute
+    public sealed class SaveAttribute : Attribute
     {
     }
 }

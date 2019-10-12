@@ -83,7 +83,7 @@ namespace Squizzy.Services
         private async Task CommandExecutedAsync(CommandExecutedEventArgs args)
         {
             var ctx = args.Context as SquizzyContext;
-            if (!_maintenance.IsMaintenanceEnabled() && !ctx.Command.Attributes.Any(x => x.GetType() != typeof(NoSaveAttribute))) 
+            if (!_maintenance.IsMaintenanceEnabled() && ctx.Command.Attributes.Any(x => x.GetType() == typeof(SaveAttribute))) 
             {
                 await _db.SavePlayerAsync(ctx.Player);
             }

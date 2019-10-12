@@ -11,9 +11,11 @@ namespace Squizzy.Commands
         [RequireFreeRessources(RessourceType.User)]
         [RequireMultiplayer(false)]
         [RequireMagnets(minimum: 500)]
+        [Save]
         public Task UnlockMultiplayerAsync()
         {
             Context.Player.Magnets -= 500;
+            Context.Player.HasMultiplayer = true;
 
             var embed = new EmbedBuilder()
                 .WithColor(EmbedColor.Success)
