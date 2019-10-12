@@ -104,5 +104,7 @@ namespace Squizzy.Games
             Exit();
             return Task.CompletedTask;
         }
+
+        public override Task SaveDataAsync() => _db.SavePlayerAsync(Player.Player);
     }
 }

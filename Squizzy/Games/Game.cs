@@ -18,7 +18,7 @@ namespace Squizzy.Games
         public abstract Task InitializeAsync(IServiceProvider provider);
         public virtual Task OnPlayerInactiveAsync(MinigamePlayer inactivePlayer) => Task.CompletedTask;
         public abstract Task CancelAsync();
-        public virtual Task SaveDataAsync() => Task.CompletedTask;
+        public abstract Task SaveDataAsync();
 
         public async Task ExecuteAsync()
         {
