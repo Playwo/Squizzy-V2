@@ -11,34 +11,46 @@ namespace Squizzy.Entities
         public ulong Id { get; private set; }
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int Trophies { get; set; } = 0;
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int Magnets { get; set; } = 0;
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int Honor { get; set; } = 0;
 
-        [BsonElement]
+        [BsonElement]  //Default value provided through DbBackEndService#RegisterClassMaps
         public List<QuestionResult> AnsweredQuestions { get; set; } = new List<QuestionResult>();
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int TotalAnsweredQuestions { get; set; } = 0;
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int TotalCorrectQuestions { get; set; } = 0;
 
         [BsonElement]
+        [BsonDefaultValue(false)]
         public bool HasMultiplayer { get; set; } = false;
 
-        [BsonElement]
+        [BsonElement] //Default value provided through DbBackEndService#RegisterClassMaps
+        public Dictionary<int, int> Upgrades = new Dictionary<int, int>();
+
+        [BsonElement] //Default value provided through DbBackEndService#RegisterClassMaps
         public CooldownManager Cooldown { get; set; } = new CooldownManager();
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int MatchesWon { get; set; } = 0;
 
         [BsonElement]
+        [BsonDefaultValue(0)]
         public int MatchesPlayed { get; set; }
+
 
         [BsonIgnore]
         public string Name { get; set; }

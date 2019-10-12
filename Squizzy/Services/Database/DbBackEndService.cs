@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Squizzy.Entities;
 
@@ -34,6 +36,8 @@ namespace Squizzy.Services
             ScrapClicker1_Collection = Database.GetCollection<Question>("ScrapClicker1-Questions");
             General_Collection = Database.GetCollection<Question>("General-Questions");
 
+            RegisterClassMaps();
+
             return base.InitializeAsync();
         }
 
@@ -57,5 +61,14 @@ namespace Squizzy.Services
             Category.Random => GetCategoryCollection(_random.GetRandomCategory()),
             _ => null,
         };
+
+        public void RegisterClassMaps() 
+            => BsonClassMap.RegisterClassMap<SquizzyPlayer>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.MapMember(x => x.Upgrades).SetDefaultValue(new Dictionary<int, int>());
+                    cm.MapMember(x => x.AnsweredQuestions).SetDefaultValue(new List<QuestionResult>());
+                    cm.MapMember(x => x.Cooldown).SetDefaultValue(new CooldownManager());
+                });
     }
 }
