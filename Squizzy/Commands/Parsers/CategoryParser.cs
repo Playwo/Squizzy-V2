@@ -57,6 +57,7 @@ namespace Squizzy.Commands
             var errorMessage = new StringBuilder()
                 .AppendLine("No category found matching your input!")
                 .AppendLine("Valid categories are:");
+
             foreach (Category category in Enum.GetValues(typeof(Category)))
             {
                 errorMessage.AppendLine($" => {category}");

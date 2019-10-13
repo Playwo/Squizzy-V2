@@ -43,25 +43,30 @@ namespace Squizzy.Entities
         public static QuestionResult FromCorrect(Category category, int questionId, TimeSpan time)
             => new QuestionResult(category, questionId, true, time);
 
-        public int CalculateTrophies(Question question)
+        public int CalculateTrophies(Question question, SquizzyPlayer player)
         {
-            double perfectTime = 2.0d;
+            var pTimeUpgrade = new PerfectTimeUpgrade();
+            int pTimeLevel = player.GetUpgradeLevel(pTimeUpgrade);
+            double pTime = pTimeUpgrade.CalculateValue(pTimeLevel);
+
             Perfect = false;
 
             if (!Correct)
             {
                 return 0;
             }
-            if (Time.TotalSeconds < perfectTime)
+            if (Time.TotalSeconds < pTime)
             {
                 Perfect = true;
-                return question.Reward;
+                var pTrophiesUpgrade = new PerfectTrophiesUpgrade();
+                int pTrohpiesLevel = player.GetUpgradeLevel(pTrophiesUpgrade);
+                return pTrophiesUpgrade.CalculateValue(pTrohpiesLevel, question.Reward);
             }
 
-            double factor = -Math.Log(0.3333) / (question.Time - perfectTime);
+            double factor = -Math.Log(0.3333) / (question.Time - pTime);
 
             int trophies = (int) Math.Floor(
-                question.Reward * Math.Pow(Math.E, -factor * (Time.TotalSeconds - perfectTime)));
+                question.Reward * Math.Pow(Math.E, -factor * (Time.TotalSeconds - pTime)));
 
             return trophies;
         }

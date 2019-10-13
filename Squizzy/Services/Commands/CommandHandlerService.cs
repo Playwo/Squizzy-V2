@@ -83,29 +83,47 @@ namespace Squizzy.Services
         private async Task CommandExecutedAsync(CommandExecutedEventArgs args)
         {
             var ctx = args.Context as SquizzyContext;
-            if (!_maintenance.IsMaintenanceEnabled() && ctx.Command.Attributes.Any(x => x.GetType() == typeof(SaveAttribute)))
-            {
-                await _db.SavePlayerAsync(ctx.Player);
-            }
 
-            var message = new LogMessage(LogSeverity.Info, "CommandHandler", $"Executed {ctx.Command.Name} in {ctx.Channel.Name} for {ctx.User.Username}");
-            await _logger.LogAsync(message);
-            _ressourceAdministration.UnblockCommandId(ctx.CommandId);
+            try
+            {
+                if (!_maintenance.IsMaintenanceEnabled() && ctx.Command.Attributes.Any(x => x.GetType() == typeof(SaveAttribute)))
+                {
+                    await _db.SavePlayerAsync(ctx.Player);
+                }
+
+                var message = new LogMessage(LogSeverity.Info, "CommandHandler", $"Executed {ctx.Command.Name} in {ctx.Channel.Name} for {ctx.User.Username}");
+                await _logger.LogAsync(message);
+            }
+            catch (Exception ex)
+            {
+                await _logger.ReportErrorAsync(ctx.Message, ex);
+                var message = new LogMessage(LogSeverity.Warning, "CommandHandler", $"Command {ctx.Command.Name} Error in CommandExecutedAsync! Channel: {ctx.Channel.Name} User: {ctx.User.Username}", ex);
+                await _logger.LogAsync(message);
+            }
+            finally
+            {
+                _ressourceAdministration.UnblockCommandId(ctx.CommandId);
+            }
         }
 
         private async Task CommandExecutionFailedAsync(CommandExecutionFailedEventArgs args)
         {
             var ctx = args.Context as SquizzyContext;
 
-            if (args.Result.Exception != null)
+            try
             {
-                await _logger.ReportErrorAsync(ctx.Message, args.Result.Exception);
+                if (args.Result.Exception != null)
+                {
+                    await _logger.ReportErrorAsync(ctx.Message, args.Result.Exception);
+                }
+
+                var message = new LogMessage(LogSeverity.Warning, "CommandHandler", $"Command {ctx.Command.Name} Execution failed in {ctx.Channel.Name} for {ctx.User.Username}", args.Result.Exception);
+                await _logger.LogAsync(message);
             }
-
-            var message = new LogMessage(LogSeverity.Warning, "CommandHandler", $"Command {ctx.Command.Name} Execution failed in {ctx.Channel.Name} for {ctx.User.Username}", args.Result.Exception);
-            await _logger.LogAsync(message);
-
-            _ressourceAdministration.UnblockCommandId(ctx.CommandId);
+            finally
+            {
+                _ressourceAdministration.UnblockCommandId(ctx.CommandId);
+            }
         }
     }
 }

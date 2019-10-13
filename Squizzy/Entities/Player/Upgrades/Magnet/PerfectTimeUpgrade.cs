@@ -2,9 +2,18 @@
 {
     public class PerfectTimeUpgrade : MagnetUpgrade
     {
-        public PerfectTimeUpgrade()
-            : base(2, "Perfect Time Increase", 1000, 1000)
-        {
-        }
+        public override int Id => 1;
+
+        public override string Name => "Perfect Time";
+
+        public override string Description => "Increases the time you have to get a perfect answer by 0.1 seconds";
+
+        public override string[] NameShortcuts => new[] { Name, "PerfectTime", "PTime", "PerfectDuration", "PDuration", "PSpan" };
+
+        public override int BaseCost => 1000;
+
+        public override int CostStep => 1000;
+
+        public double CalculateValue(int level) => 1.6d + (0.1d * level);
     }
 }

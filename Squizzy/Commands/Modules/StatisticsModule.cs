@@ -33,7 +33,7 @@ namespace Squizzy.Commands
                                   $"Average Answer Time {player.AverageAnswerTime} seconds")
                         .AddField($"{player.Honor} :gem:",
                                   $"Games Played: {player.MatchesPlayed}\n" +
-                                  $"Games Won: {player.MatchesWon}" +
+                                  $"Games Won: {player.MatchesWon}\n" +
                                   $"Success Rate: {player.MultiplayerSuccessRate}%")
                         .Build());
                     break;

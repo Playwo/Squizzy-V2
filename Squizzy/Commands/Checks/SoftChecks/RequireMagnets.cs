@@ -18,9 +18,9 @@ namespace Squizzy.Commands
 
         public override ValueTask<CheckResult> CheckAsync(SquizzyContext context)
             => context.Player.Magnets < Minimum
-                ? CheckResult.Unsuccessful($"You need at least {Minimum} :magnet:440898600738750465> to do that!")
+                ? CheckResult.Unsuccessful($"You need at least {Minimum} <:magnet:440898600738750465> to do that!")
                 : context.Player.Magnets > Maximum
-                    ? CheckResult.Unsuccessful($"You can't do that if you have more than {Maximum} :magnet:440898600738750465>")
+                    ? CheckResult.Unsuccessful($"You can't do that if you have more than {Maximum} <:magnet:440898600738750465>")
                     : (ValueTask<CheckResult>) CheckResult.Successful;
     }
 }

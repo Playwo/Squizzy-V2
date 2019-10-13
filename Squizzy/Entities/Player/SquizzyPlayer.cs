@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace Squizzy.Entities
 {
@@ -37,6 +38,7 @@ namespace Squizzy.Entities
         [BsonDefaultValue(false)]
         public bool HasMultiplayer { get; set; } = false;
 
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         [BsonElement] //Default value provided through DbBackEndService#RegisterClassMaps
         public Dictionary<int, int> Upgrades { get; private set; } = new Dictionary<int, int>();
 
@@ -86,6 +88,20 @@ namespace Squizzy.Entities
         public bool HasAnsweredQuestion(Question question)
             => AnsweredQuestions.Any(x => x.QuestionId == question.Id);
 
+        public int GetUpgradeLevel<TUpgrade>() where TUpgrade : IUpgrade, new() //Returns the level or 0
+            => Upgrades.Where(x => x.Key == new TUpgrade().Id).FirstOrDefault().Value;
+
+        public int GetUpgradeLevel(IUpgrade upgrade)
+            => Upgrades.Where(x => x.Key == upgrade.Id).FirstOrDefault().Value;
+
+        public void SetUpgradeLevel(IUpgrade upgrade, int level)
+        {
+            if (!Upgrades.TryAdd(upgrade.Id, level))
+            {
+                Upgrades[upgrade.Id] = level;
+            }
+        }
+
         public void ProcessAnsweredQuestion(Question question, QuestionResult newResult, QuestionResult oldResult,
                                             out int newTrophies, out int oldTrophies, out int magnets)
         {
@@ -95,14 +111,18 @@ namespace Squizzy.Entities
                 TotalCorrectQuestions++;
             }
 
-            oldTrophies = oldResult.CalculateTrophies(question);
-            newTrophies = newResult.CalculateTrophies(question);
+            oldTrophies = oldResult.CalculateTrophies(question, this);
+            newTrophies = newResult.CalculateTrophies(question, this);
 
-            magnets = (int) Math.Ceiling(newTrophies / 5.0);
-            if (magnets == 0)
+            var upgrade = new MagnetGainUpgrade();
+            int level = GetUpgradeLevel(upgrade);
+            magnets = upgrade.CalculateValue(level);
+
+            if (!newResult.Correct)
             {
-                magnets = -3;
+                magnets = -magnets;
             }
+
             if (Magnets + magnets < 0)
             {
                 magnets = -Magnets;

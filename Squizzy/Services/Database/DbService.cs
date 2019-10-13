@@ -177,7 +177,7 @@ namespace Squizzy.Services
                 foreach (var questionResult in player.AnsweredQuestions)
                 {
                     var question = tempQuestionStore.Find(x => x.Type == questionResult.Category && x.Id == questionResult.QuestionId);
-                    trophies += questionResult.CalculateTrophies(question);
+                    trophies += questionResult.CalculateTrophies(question, player);
                 }
 
                 player.Trophies = trophies;

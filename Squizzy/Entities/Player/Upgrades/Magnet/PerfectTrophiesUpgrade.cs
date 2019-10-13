@@ -2,11 +2,18 @@
 {
     public class PerfectTrophiesUpgrade : MagnetUpgrade
     {
-        public PerfectTrophiesUpgrade()
-            : base(3, "Perfect Trophies", 2000, 1500)
-        {
-        }
+        public override int Id => 2;
 
-        public int CalculatePerfectTrophies(int level, int perfectTrophies) => perfectTrophies + level;
+        public override string Name => "Perfect Trophies";
+
+        public override string Description => "Increases the :trophy: you get for a perfect answered question by 1";
+
+        public override string[] NameShortcuts => new[] { Name, "PerfectTrophies", "PerfectTrophs", "TrophiesPerfect", "PerfectTrophy", "PTrophies", "PTroph", "PTrop" };
+
+        public override int BaseCost => 2000;
+
+        public override int CostStep => 1500;
+
+        public int CalculateValue(int level, int perfectTrophies) => perfectTrophies + level;
     }
 }

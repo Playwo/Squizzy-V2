@@ -2,17 +2,14 @@
 {
     public abstract class MagnetUpgrade : IUpgrade
     {
-        public int Id { get; }
-        public string Name { get; }
-        public int BaseCost { get; }
-        public int CostStep { get; }
+        public abstract int Id { get; }
+        public abstract string Name { get; }
+        public abstract string Description { get; }
+        public abstract string[] NameShortcuts { get; }
+        public abstract int BaseCost { get; }
+        public abstract int CostStep { get; }
 
-        public MagnetUpgrade(int id, string name, int baseCost, int costStep)
-        {
-            Id = id;
-            Name = name;
-            BaseCost = baseCost;
-            CostStep = costStep;
-        }
+        public int GetCost(int level)
+            => BaseCost + (CostStep * level);
     }
 }

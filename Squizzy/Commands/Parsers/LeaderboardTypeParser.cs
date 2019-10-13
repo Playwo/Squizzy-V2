@@ -19,9 +19,9 @@ namespace Squizzy.Commands
 
         public override ValueTask<TypeParserResult<LeaderboardType>> ParseAsync(Parameter parameter, string value, SquizzyContext context)
         {
-            foreach (var category in LbTypeShortcuts.Keys)
+            foreach (var lbType in LbTypeShortcuts.Keys)
             {
-                bool success = LbTypeShortcuts.TryGetValue(category, out string[] shortcuts);
+                bool success = LbTypeShortcuts.TryGetValue(lbType, out string[] shortcuts);
 
                 if (!success)
                 {
@@ -33,12 +33,13 @@ namespace Squizzy.Commands
                     continue;
                 }
 
-                return TypeParserResult<LeaderboardType>.Successful(category);
+                return TypeParserResult<LeaderboardType>.Successful(lbType);
             }
 
             var errorMessage = new StringBuilder()
-            .AppendLine("No leaderboard type found matching your input!")
-            .AppendLine("Valid types are:");
+                .AppendLine("No leaderboard type found matching your input!")
+                .AppendLine("Valid types are:");
+
             foreach (var lbType in LbTypeShortcuts)
             {
                 errorMessage.AppendLine($" => {lbType.Value[0]}");

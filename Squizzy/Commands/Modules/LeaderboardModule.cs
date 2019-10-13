@@ -18,7 +18,7 @@ namespace Squizzy.Commands
         public DbService Db { get; set; }
         public InteractivityService Interactivity { get; set; }
 
-        [Command("Leaderboard", "Lb", "Leader", "Leaders")]
+        [Command("Leaderboard", "Lb", "Leader", "Leaders", "Top")]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         [Description("Get the player leaderboard for different statistic values")]
         public async Task GetLeaderboardAsync([Name("Type")]LeaderboardType type, [Name("Pages"), Range(1, 10)]int pagecount = 5)

@@ -74,6 +74,7 @@ namespace Squizzy
             CommandService.AddTypeParser(new PlayerParser());
             CommandService.AddTypeParser(new CommandParser());
             CommandService.AddTypeParser(new MultiGameParser());
+            CommandService.AddTypeParser(new MagnetUpgradeParser());
         }
 
         private IServiceProvider MakeProvider()

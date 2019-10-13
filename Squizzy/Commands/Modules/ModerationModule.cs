@@ -60,7 +60,7 @@ namespace Squizzy.Commands
                 .WithDeletion(DeletionOption.AfterCapturedContext)
                 .Build();
 
-            var result = await Interactivity.GetUserConfirmationAsync(confirmation, Context.Channel);
+            var result = await Interactivity.SendConfirmationAsync(confirmation, Context.Channel);
 
             if (result.Value)
             {
@@ -101,7 +101,8 @@ namespace Squizzy.Commands
         [Command("Report", "Feedback", "BugReport", "SendFeedback", "GiveFeedback")]
         [Description("Sends feedback to the developer")]
         [RequireFinishedCooldown]
-        public async Task ReportAsync([Remainder]string message)
+        [Save]
+        public async Task ReportAsync([Name("Message")][Remainder]string message)
         {
             var reportChannel = Context.Client.GetChannel(ulong.Parse(Config["feedbackChannel"])) as ISocketMessageChannel;
 
@@ -120,7 +121,7 @@ namespace Squizzy.Commands
                     .WithDescription(message))
                 .Build();
 
-            var result = await Interactivity.GetUserConfirmationAsync(request, Context.Channel);
+            var result = await Interactivity.SendConfirmationAsync(request, Context.Channel);
 
             if (result.Value)
             {

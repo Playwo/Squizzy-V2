@@ -147,7 +147,7 @@ namespace Squizzy.Services
             => new EmbedBuilder()
                     .WithColor(EmbedColor.Error)
                     .WithTitle("ERROR, FIX ME NOW!")
-                    .WithDescription($"Stacktrace:\n{ex.Message}\n{ex.StackTrace}".Substring(0, 2000))
+                    .WithDescription($"Stacktrace:\n{ex.Message}\n{ex.StackTrace}".Truncate(2047))
                     .AddField("Additional Infos:", $"Message: {msg.Content}\nUser: {msg.Author}\nChannel: {msg.Channel}")
                     .Build();
 

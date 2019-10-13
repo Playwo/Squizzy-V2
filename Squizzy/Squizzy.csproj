@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Discord.InteractivityAddon" Version="2.0.0-alpha-006" />
+    <PackageReference Include="Discord.InteractivityAddon" Version="2.0.0-alpha-008" />
     <PackageReference Include="Discord.Net.Core" Version="2.1.1" />
     <PackageReference Include="Discord.Net.Rest" Version="2.1.1" />
     <PackageReference Include="Discord.Net.Webhook" Version="2.1.1" />
@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
-    <PackageReference Include="Qmmands" Version="3.0.0-nightly-00209" />
+    <PackageReference Include="Qmmands" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

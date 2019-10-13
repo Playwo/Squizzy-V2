@@ -43,7 +43,7 @@ namespace Squizzy.Commands
         [RequireLobby(true, needsLeader: true)]
         [RequireBotPermission(ChannelPermission.ManageMessages)]
         [RequireMultiplayer(true)]
-        public Task ChangeLobbyGameAsync(MultiGame game)
+        public Task ChangeLobbyGameAsync([Name("Game")]MultiGame game)
         {
             var lobby = Minigame.GetLobby(Context.User);
             return lobby.SetGameAsync(game);
