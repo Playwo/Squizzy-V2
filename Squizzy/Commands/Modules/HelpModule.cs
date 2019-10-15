@@ -52,7 +52,7 @@ namespace Squizzy.Commands
                 var cmdHelpBuilder = new StringBuilder();
                 foreach (var command in runnableCommands)
                 {
-                    cmdHelpBuilder.AppendLine(command.GetHelp());
+                    cmdHelpBuilder.AppendLine(command.GetHelpMessage());
                 }
 
                 helpBuilder.AddField($"{module.Name}",

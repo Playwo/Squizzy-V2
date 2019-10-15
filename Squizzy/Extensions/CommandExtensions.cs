@@ -32,7 +32,7 @@ namespace Squizzy.Extensions
             return checkResults.Any(x => !x.IsSuccessful);
         }
 
-        public static string GetHelp(this Command command)
+        public static string GetHelpMessage(this Command command)
         {
             var builder = new StringBuilder()
                 .Append($"{command.Name}");
@@ -42,6 +42,8 @@ namespace Squizzy.Extensions
                 builder.Append($" [{parameter.Name}]");
             }
 
+            builder.Append($" - {command.Description}");
+
             return builder.ToString();
         }
 
@@ -50,7 +52,7 @@ namespace Squizzy.Extensions
             var builder = new EmbedBuilder()
                 .WithColor(EmbedColor.Help)
                 .WithTitle($"{command.Name} Overview")
-                .AddField("Usage", GetHelp(command))
+                .AddField("Usage", GetHelpMessage(command))
                 .AddField("Aliases", $"{string.Join(", ", command.Aliases)}")
                 .AddField("Description", command.Description ?? "None");
 
