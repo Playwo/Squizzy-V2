@@ -127,8 +127,8 @@ namespace Squizzy.Commands
 
                 pages.Add(new PageBuilder()
                     .WithColor(EmbedColor.Statistic)
-                    .WithTitle($"{upgrade.Name} # {upgrade.Id}")
-                    .WithDescription($"{upgrade.Description}")
+                    .WithTitle($"{player}'s Magnet Upgrade Levels")
+                    .AddField($"{upgrade.Name} # {upgrade.Id}", $"{upgrade.Description}")
                     .AddField("Level", level + 1));
             }
 
