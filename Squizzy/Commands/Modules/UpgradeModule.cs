@@ -117,7 +117,7 @@ namespace Squizzy.Commands
         [Command("Levels", "GetLevels")]
         [Description("Get the upgrade levels of a specific player")]
         [Priority(1)]
-        public Task GetUpgradeLevels([Name("Player")]SquizzyPlayer player)
+        public Task GetUpgradeLevels([Remainder][Name("Player")]SquizzyPlayer player)
         {
             var pages = new List<PageBuilder>();
 
