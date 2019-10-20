@@ -14,6 +14,8 @@
 
         public override int CostStep => 500;
 
+        public override string GetCurrentValue(int level) => $"{CalculateValue(level)} <:magnet:440898600738750465> per correct question";
+
         public int CalculateValue(int level) => 1 + level; //1 + 1 per level
     }
 }

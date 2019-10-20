@@ -6,5 +6,6 @@
         public string Name { get; }
         public string Description { get; }
         public string[] NameShortcuts { get; }
+        public string GetCurrentValue(int level);
     }
 }

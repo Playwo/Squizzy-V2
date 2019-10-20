@@ -14,6 +14,8 @@
 
         public override int CostStep => 1000;
 
+
+        public override string GetCurrentValue(int level) => $"{CalculateValue(level)} seconds";
         public double CalculateValue(int level) => 1.6d + (0.1d * level);
     }
 }

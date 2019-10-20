@@ -14,6 +14,7 @@
 
         public override int CostStep => 1500;
 
+        public override string GetCurrentValue(int level) => $"+{CalculateValue(level, 0)} :trophy: for a perfect answer";
         public int CalculateValue(int level, int perfectTrophies) => perfectTrophies + level;
     }
 }

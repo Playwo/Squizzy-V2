@@ -129,7 +129,8 @@ namespace Squizzy.Commands
                     .WithColor(EmbedColor.Statistic)
                     .WithTitle($"{player}'s Magnet Upgrade Levels")
                     .AddField($"{upgrade.Name} # {upgrade.Id}", $"{upgrade.Description}")
-                    .AddField("Level", level + 1));
+                    .AddField("Level", level + 1, true)
+                    .AddField("Current Value", upgrade.GetCurrentValue(level), true));
             }
 
             var paginator = new PaginatorBuilder()

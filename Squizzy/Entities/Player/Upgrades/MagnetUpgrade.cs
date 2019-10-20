@@ -11,5 +11,6 @@
 
         public int GetCost(int level)
             => BaseCost + (CostStep * level);
+        public abstract string GetCurrentValue(int level);
     }
 }
