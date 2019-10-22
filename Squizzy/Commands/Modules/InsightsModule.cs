@@ -13,14 +13,13 @@ namespace Squizzy.Commands
 
         [Command("MaximumTrophies", "MaxTrophies", "MaxT", "MTrophies", "MT")]
         [Description("Get the maximum amount of trophies you can theoretically reach")]
-        public async Task SendMaximumTrophiesAsync([Name("IncludeUpggrades")]bool includeUpgrades = true)
+        public async Task SendMaximumTrophiesAsync([Name("IncludeUpgrades")]bool includeUpgrades = true)
         {
             int questionCount = (int) await Db.CountTotalQuestionsAsync();
 
             var upgrade = new PerfectTrophiesUpgrade();
             int level = Context.Player.GetUpgradeLevel(upgrade);
-            int bonusTrophies = upgrade.CalculateValue(level, 0) / questionCount;
-
+            int bonusTrophies = upgrade.CalculateValue(level, 0) * questionCount;
 
             int maximumTrophies = includeUpgrades
                 ? await Db.CountMaximumTrophiesAsync() + bonusTrophies
