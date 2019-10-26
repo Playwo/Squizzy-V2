@@ -33,7 +33,7 @@ namespace Squizzy.Commands
 
             await ReplyAsync(embed: embed);
 
-            await Db.RecalculateTrophiesAsync();
+            await Db.RecalculateAllPlayerTrophiesAsync();
 
             embed = new EmbedBuilder()
                 .WithColor(EmbedColor.Success)

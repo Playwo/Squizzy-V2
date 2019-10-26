@@ -161,14 +161,24 @@ namespace Squizzy.Services
 
         #endregion
 
-        public async Task RecalculateTrophiesAsync()
+        public async Task RecalculatePlayerTrophiesAsync(SquizzyPlayer player)
         {
-            var tempQuestionStore = new List<Question>();
+            var tempQuestionStore = await LoadAllQuestionsAsync();
 
-            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.General));
-            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker1));
-            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapClicker2));
-            tempQuestionStore.AddRange(await LoadQuestionsAsync(Category.ScrapTD));
+            int trophies = 0;
+
+            foreach (var questionResult in player.AnsweredQuestions)
+            {
+                var question = tempQuestionStore.Find(x => x.Type == questionResult.Category && x.Id == questionResult.QuestionId);
+                trophies += questionResult.CalculateTrophies(question, player);
+            }
+
+            player.Trophies = trophies;
+        }
+
+        public async Task RecalculateAllPlayerTrophiesAsync()
+        {
+            var tempQuestionStore = await LoadAllQuestionsAsync();
 
             foreach (var player in (await _dbBackEnd.PlayerCollection.FindAsync(x => true)).ToEnumerable())
             {

@@ -14,6 +14,7 @@ namespace Squizzy.Commands
     {
         public UpgradeService Upgrade { get; set; }
         public InteractivityService Interactivity { get; set; }
+        public DbService Db { get; set; }
 
         [Command("UnlockMultiplayer", "MultiplayerUnlock", "MUnlock", "UnlockM", "BuyMultiplayer", "MultiplayerAccess", "AccessMultiplayer")]
         [Description("Buy the access to multiplayer modes for 500 <:magnet:440898600738750465>")]
@@ -103,6 +104,11 @@ namespace Squizzy.Commands
                 level++;
                 Context.Player.Magnets -= cost;
                 Context.Player.SetUpgradeLevel(upgrade, level);
+
+                if (upgrade.RequireRecalculation)
+                {
+                    await Db.RecalculatePlayerTrophiesAsync(Context.Player);
+                }
 
                 var embed = new EmbedBuilder()
                     .WithColor(EmbedColor.Success)
