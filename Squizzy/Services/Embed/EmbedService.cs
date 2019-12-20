@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Discord;
 using Discord.WebSocket;
@@ -121,6 +122,7 @@ namespace Squizzy.Services
                 case OverloadsFailedResult overloadsResult:
                     description.AppendLine("__**The syntax was wrong**__");
                     description.AppendLine($"`{overloadsResult.Reason}`");
+                    description.AppendLine($"`{overloadsResult.FailedOverloads.First().Value.Reason}`");
                     break;
                 case TypeParseFailedResult parseResult:
                     description.AppendLine("__**The following parameter couldn't be parsed**__");

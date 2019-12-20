@@ -57,19 +57,30 @@ namespace Squizzy.Services
                           }
 
                           var context = await _db.LoadContextAsync(message);
-                          var result = await _commands.ExecuteAsync(output, context);
 
-                          if (!(result is FailedResult failedResult))
+                          try
                           {
-                              return;
+                              var result = await _commands.ExecuteAsync(output, context);
+
+                              if (!(result is FailedResult failedResult))
+                              {
+                                  return;
+                              }
+                              if (result is CommandNotFoundResult)
+                              {
+                                  return;
+                              }
+                              var response = _embed.GetFailedResultEmbed(failedResult);
+                              await msg.Channel.SendMessageAsync(embed: response);
                           }
-                          if (result is CommandNotFoundResult)
+                          catch (Exception ex)
                           {
-                              return;
+                              await _logger.ReportErrorAsync(msg, ex);
                           }
-                          var response = _embed.GetFailedResultEmbed(failedResult);
-                          await msg.Channel.SendMessageAsync(embed: response);
-                          _ressourceAdministration.UnblockCommandId(context.CommandId);
+                          finally
+                          {
+                              _ressourceAdministration.UnblockCommandId(context.CommandId);
+                          }
                       }
                   }
                   catch (Exception ex)
