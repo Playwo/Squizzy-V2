@@ -41,10 +41,13 @@ namespace Squizzy.Services
                       {
                           return;
                       }
-
-                      if (msg is SocketUserMessage message)
+                      if (msg.Channel is SocketDMChannel)
                       {
+                          await msg.Channel.SendMessageAsync("Sorry, but I do not support DM commands!\nIf you want to play visit the official scrap server: https://discord.gg/W3d9Jvx");
+                      }
 
+                      if (msg is SocketUserMessage message && msg.Channel is SocketTextChannel channel)
+                      {
                           if (!CommandUtilities.HasPrefix(msg.Content, _config["prefix"], out string output))
                           {
                               return;
@@ -57,6 +60,14 @@ namespace Squizzy.Services
                           }
 
                           var context = await _db.LoadContextAsync(message);
+
+                          var check = new RequireBotPermissionAttribute(ChannelPermission.SendMessages);
+                          var checkResult = await check.CheckAsync(context);
+
+                          if (!checkResult.IsSuccessful)
+                          {
+                              return;
+                          }
 
                           try
                           {

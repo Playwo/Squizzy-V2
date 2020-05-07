@@ -13,7 +13,6 @@ namespace Squizzy.Commands
         public SocketUserMessage Message { get; }
         public SocketUser User { get; }
         public SquizzyPlayer Player { get; }
-        public bool IsDM => Guild == null;
         public ulong CommandId => Message.Id;
 
         public SquizzyContext(DiscordSocketClient shard, SocketUserMessage msg, SocketGuild guild, SquizzyPlayer player, IServiceProvider provider)
