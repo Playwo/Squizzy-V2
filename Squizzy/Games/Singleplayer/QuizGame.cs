@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
-using InteractivityAddon;
-using InteractivityAddon.Selection;
+using Interactivity;
+using Interactivity.Selection;
 using Squizzy.Entities;
 using Squizzy.Extensions;
 using Squizzy.Services;

@@ -117,7 +117,7 @@ namespace Squizzy.Services
         #region Save
         public async Task SavePlayerAsync(SquizzyPlayer player)
         {
-            var options = new UpdateOptions() { IsUpsert = true }; //Create If non existing
+            var options = new ReplaceOptions() { IsUpsert = true }; //Create If non existing
             await _dbBackEnd.PlayerCollection.ReplaceOneAsync(x => x.Id == player.Id, player, options); //Replace Document
         }
 

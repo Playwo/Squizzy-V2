@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord;
-using InteractivityAddon;
-using InteractivityAddon.Confirmation;
-using InteractivityAddon.Pagination;
+using Interactivity;
+using Interactivity.Confirmation;
+using Interactivity.Pagination;
 using Qmmands;
 using Squizzy.Entities;
 using Squizzy.Services;
@@ -56,8 +56,10 @@ namespace Squizzy.Commands
                     .AddField("Shortcuts", string.Join(", ", upgrade.NameShortcuts)));
             }
 
-            var paginator = new PaginatorBuilder()
+            var paginator = new StaticPaginatorBuilder()
                 .WithPages(pages.ToArray())
+                .WithDefaultEmotes()
+                .WithDeletion(DeletionOptions.AfterCapturedContext | DeletionOptions.Valid | DeletionOptions.Invalids)
                 .WithUsers(Context.User)
                 .Build();
 
@@ -94,7 +96,7 @@ namespace Squizzy.Commands
             var confirmation = new ConfirmationBuilder()
                 .WithContent(page)
                 .WithUsers(Context.User)
-                .WithDeletion(DeletionOption.Invalids | DeletionOption.AfterCapturedContext)
+                .WithDeletion(DeletionOptions.Invalids | DeletionOptions.AfterCapturedContext)
                 .Build();
 
             var result = await Interactivity.SendConfirmationAsync(confirmation, Context.Channel);
@@ -139,8 +141,10 @@ namespace Squizzy.Commands
                     .AddField("Current Value", upgrade.GetCurrentValue(level), true));
             }
 
-            var paginator = new PaginatorBuilder()
+            var paginator = new StaticPaginatorBuilder()
                 .WithPages(pages.ToArray())
+                .WithDeletion(DeletionOptions.Invalids | DeletionOptions.AfterCapturedContext | DeletionOptions.Valid)
+                .WithDefaultEmotes()
                 .WithUsers(Context.User)
                 .Build();
 

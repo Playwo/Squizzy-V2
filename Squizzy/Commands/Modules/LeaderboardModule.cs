@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
-using InteractivityAddon;
-using InteractivityAddon.Pagination;
+using Interactivity;
+using Interactivity.Pagination;
 using Qmmands;
 using Squizzy.Entities;
 using Squizzy.Extensions;
@@ -42,10 +42,12 @@ namespace Squizzy.Commands
                 pages.Add(page);
             }
 
-            var paginator = new PaginatorBuilder()
+            var paginator = new StaticPaginatorBuilder()
                 .WithUsers(Context.User)
                 .WithPages(pages.ToArray())
-                .WithPaginatorFooter(PaginatorFooter.PageNumber | PaginatorFooter.Users)
+                .WithFooter(PaginatorFooter.PageNumber | PaginatorFooter.Users)
+                .WithDefaultEmotes()
+                .WithDeletion(DeletionOptions.Valid | DeletionOptions.Invalids | DeletionOptions.AfterCapturedContext)
                 .Build();
 
             await Interactivity.SendPaginatorAsync(paginator, Context.Channel, timeout: TimeSpan.FromMinutes(3));

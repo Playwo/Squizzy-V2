@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using InteractivityAddon;
-using InteractivityAddon.Confirmation;
+using Interactivity;
+using Interactivity.Confirmation;
 using Microsoft.Extensions.Configuration;
 using Qmmands;
 using Squizzy.Services;
@@ -57,7 +57,7 @@ namespace Squizzy.Commands
             var confirmation = new ConfirmationBuilder()
                 .WithContent(content)
                 .WithUsers(Context.User)
-                .WithDeletion(DeletionOption.AfterCapturedContext)
+                .WithDeletion(DeletionOptions.AfterCapturedContext)
                 .Build();
 
             var result = await Interactivity.SendConfirmationAsync(confirmation, Context.Channel);
@@ -114,7 +114,7 @@ namespace Squizzy.Commands
             var request = new ConfirmationBuilder()
                 .WithContent(content)
                 .WithUsers(Context.User)
-                .WithDeletion(DeletionOption.AfterCapturedContext | DeletionOption.Invalids)
+                .WithDeletion(DeletionOptions.AfterCapturedContext | DeletionOptions.Invalids)
                 .WithCancelledEmbed(new EmbedBuilder()
                     .WithColor(EmbedColor.Failed)
                     .WithTitle("Report cancelled!")
