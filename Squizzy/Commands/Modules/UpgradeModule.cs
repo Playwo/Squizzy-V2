@@ -17,7 +17,7 @@ namespace Squizzy.Commands
         public DbService Db { get; set; }
 
         [Command("UnlockMultiplayer", "MultiplayerUnlock", "MUnlock", "UnlockM", "BuyMultiplayer", "MultiplayerAccess", "AccessMultiplayer")]
-        [Description("Buy the access to multiplayer modes for 500 <:magnet:440898600738750465>")]
+        [Description("Buy the access to multiplayer modes for 250 <:magnet:440898600738750465>")]
         [RequireFreeRessources(RessourceType.User)]
         [RequireMultiplayer(false)]
         [RequireMagnets(minimum: 250)]
