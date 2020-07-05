@@ -37,7 +37,7 @@ namespace Squizzy.Services
               {
                   try
                   {
-                      if (msg.Author.Id == _client.CurrentUser.Id || msg.Author.IsBot)
+                      if (msg.Author == _client.CurrentUser || msg.Author.IsBot)
                       {
                           return;
                       }
