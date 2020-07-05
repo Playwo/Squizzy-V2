@@ -23,7 +23,7 @@ namespace Squizzy.Entities
                     : cooldownEndTime - DateTime.UtcNow;
 
         public void SetCommandCooldown(Command command, TimeSpan cooldown)
-            => CommandUsage.AddOrUpdate(command.Name, DateTime.UtcNow + cooldown, (key, value) => value = DateTime.UtcNow + cooldown);
+            => CommandUsage.AddOrUpdate(command.Name, DateTime.UtcNow + cooldown, (key, value) => DateTime.UtcNow + cooldown);
 
     }
 }
