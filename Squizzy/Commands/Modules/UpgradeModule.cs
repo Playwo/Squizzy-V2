@@ -20,11 +20,11 @@ namespace Squizzy.Commands
         [Description("Buy the access to multiplayer modes for 500 <:magnet:440898600738750465>")]
         [RequireFreeRessources(RessourceType.User)]
         [RequireMultiplayer(false)]
-        [RequireMagnets(minimum: 500)]
+        [RequireMagnets(minimum: 250)]
         [Save]
         public Task UnlockMultiplayerAsync()
         {
-            Context.Player.Magnets -= 500;
+            Context.Player.Magnets -= 250;
             Context.Player.HasMultiplayer = true;
 
             var embed = new EmbedBuilder()
