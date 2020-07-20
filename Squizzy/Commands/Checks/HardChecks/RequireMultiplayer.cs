@@ -7,7 +7,7 @@ namespace Squizzy.Commands
     {
         public bool NeedsMultiplayer { get; }
 
-        public override string Description => throw new System.NotImplementedException();
+        public override string Description => "The command requires multiplayer access";
 
         public RequireMultiplayer(bool needsMultiplayer)
         {
